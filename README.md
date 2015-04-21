@@ -25,7 +25,7 @@ $ npm install
 To include this module in your project add the following to your package.json
 
 ```
-"thewall-templater-dustjs": "git+ssh://git@bitbucket.org:hxshortbreaks/thewall-templater-dustjs.git"
+"thewall-templater-dustjs": "git+ssh://git@bitbucket.org:hxshortbreaks/the-wall-templater-dustjs.git"
 ```
 
 
@@ -34,16 +34,16 @@ To include this module in your project add the following to your package.json
 ### Helpers
 
 - _loadTemplate
-  A special helper so we can load templates with a namespace.
+	A special helper so we can load templates with a namespace.
 
 - _formatDate
-  using `momentjs` this helper takes a date string and a format and returns a formatted date string.
+	using `momentjs` this helper takes a date string and a format and returns a formatted date string.
 
 - _dateDifferential
-  using `momentjs` this helper takes a startDate and endDate to calculate the days difference
+	using `momentjs` this helper takes a startDate and endDate to calculate the days difference
 
 - _formatNumber
-  using 'numeraljs' this helpers takes a number string and a format and returns a formatted date string.
+	using 'numeraljs' this helpers takes a number string and a format and returns a formatted date string.
 
 
 ## Tests
