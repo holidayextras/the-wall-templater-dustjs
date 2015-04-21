@@ -17,8 +17,7 @@
 		"node": ">= 0.10.0"
 	},
 	"scripts": {
-		"test": "grunt jshint && grunt jscs && istanbul cover _mocha -- --recursive -R spec",
-		"test2": "istanbul cover _mocha -- --recursive -R spec"
+		"test": "grunt jshint && grunt jscs && istanbul cover _mocha -- --recursive -R spec"
 	},
 	"devDependencies": {
 		"chai": "^1.9.1",
