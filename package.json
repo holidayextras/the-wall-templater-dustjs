@@ -1,0 +1,43 @@
+{
+	"name": "the-wall-templater-dustjs",
+	"description": "The Wall compatible template handler",
+	"version": "1.0.0",
+	"homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
+	"author": {
+		"name": "Shortbreaks",
+		"email": "shortbreaksdev@holidayextras.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:holidayextras/the-wall-templater-dustjs.git"
+	},
+	"license": "MIT",
+	"main": "index",
+	"engines": {
+		"node": ">= 0.10.0"
+	},
+	"scripts": {
+		"test": "grunt jshint && grunt jscs && istanbul cover _mocha -- --recursive -R spec"
+	},
+	"devDependencies": {
+		"chai": "1.9.1",
+		"chai-as-promised": "4.1.1",
+		"grunt": "0.4.3",
+		"grunt-contrib-jshint": "0.10.0",
+		"grunt-jscs": "0.8.1",
+		"grunt-mocha-test": "0.12.0",
+		"istanbul": "0.3.13",
+		"make-up": "1.0.4",
+		"mocha": "1.21.4",
+		"q-io": "1.11.5"
+	},
+	"dependencies": {
+		"dustjs-helpers": "1.5.0",
+		"dustjs-linkedin": "2.5.1",
+		"joi": "4.6.2",
+		"lodash": "2.4.1",
+		"moment": "2.8.3",
+		"numeral": "1.5.3",
+		"q": "1.0.1"
+	}
+}
