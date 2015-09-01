@@ -13,8 +13,8 @@ module.exports = function( dust ) {
 
   dust.helpers._forEach = function( chunk, context, bodies, params ) {
     params = params || {};
-    _.forEach( params.toLoop, function( n ) {
-      chunk = chunk.render( bodies.block, context.push( n ) );
+    _.forEach( params.toLoop, function( currentLoop ) {
+      chunk = chunk.render( bodies.block, context.push( currentLoop ) );
     } );
     return chunk;
   };
