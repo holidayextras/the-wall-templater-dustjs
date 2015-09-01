@@ -24,13 +24,13 @@ module.exports = function( dust ) {
 		var cheapestRoom = { id: 0, price: -1};
 
 		_.forEach( roomRates, function( roomRate ){
-			if( roomRate.grossPrice < cheapestRoom.price || cheapestRoom.price == -1 ) {
+			if( roomRate.grossPrice < cheapestRoom.price || cheapestRoom.price === -1 ) {
 				cheapestRoom = { id: roomRate.id, price: roomRate.grossPrice };
 			}
 		} );
 
 		_.forEach( packageRates, function( packageRate ) {
-			if ( packageRate.links.roomRates.ids == cheapestRoom.id ){
+			if ( packageRate.links.roomRates.ids === cheapestRoom.id ){
 				chunk = chunk.render( bodies.block, context.push( params ).push( packageRate ) );
 			}
 		} );
