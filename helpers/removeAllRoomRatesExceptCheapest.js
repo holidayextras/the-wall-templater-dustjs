@@ -12,7 +12,7 @@ module.exports = function( dust ) {
   */
 
   // This whole helper is very specific, needs to be rewritten asap.
-  dust.helpers._removeAllRoomRatesBarCheapest = function( chunk, context, bodies, params ) {
+  dust.helpers._removeAllRoomRatesExceptCheapest = function( chunk, context, bodies, params ) {
     params = params || {};
 
     // Use our params

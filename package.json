@@ -1,7 +1,7 @@
 {
 	"name": "the-wall-templater-dustjs",
 	"description": "The Wall compatible template handler",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
 	"author": {
 		"name": "Shortbreaks",

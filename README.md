@@ -48,7 +48,7 @@ To include this module in your project add the following to your package.json
 - _forEach
 	Itterate through provided object/array/string.
 
-- _removeAllRoomRatesBarCheapest
+- _removeAllRoomRatesExceptCheapest
 	Find cheapest hotel and strip rest from api reply. Should be a temporary solution, too specific.
 
 
