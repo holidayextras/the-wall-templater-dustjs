@@ -81,3 +81,6 @@ build/Release
 node_modules
 
 message.json
+
+# Make Up Linting
+/.eslintrc
