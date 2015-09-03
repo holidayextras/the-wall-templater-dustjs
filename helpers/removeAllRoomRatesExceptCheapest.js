@@ -30,7 +30,7 @@ module.exports = function( dust ) {
     } );
 
     _.forEach( packageRates, function( packageRate ) {
-      if ( packageRate.links.roomRates.ids === cheapestRoom.id ) {
+      if ( packageRate.links.roomRates.ids[0] === cheapestRoom.id ) {
         chunk = chunk.render( bodies.block, context.push( params ).push( packageRate ) );
       }
     } );
