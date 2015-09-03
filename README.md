@@ -45,6 +45,12 @@ To include this module in your project add the following to your package.json
 - _formatNumber
 	using 'numeraljs' this helpers takes a number string and a format and returns a formatted date string.
 
+- _forEach
+	Itterate through provided object/array/string.
+
+- _removeAllRoomRatesExceptCheapest
+	Find cheapest hotel and strip rest from api reply. Should be a temporary solution, too specific.
+
 
 ## Tests
 
