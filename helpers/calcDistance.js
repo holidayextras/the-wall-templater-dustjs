@@ -20,7 +20,7 @@ module.exports = function( dust ) {
     var lat2 = dust.helpers.tap( params.lat2, chunk, context );
     var lon2 = dust.helpers.tap( params.lon2, chunk, context );
     var unit = dust.helpers.tap( params.unit, chunk, context );
-    var decimalPlaces = dust.helpers.tap( params.decimalPlaces, chunk, context );
+    var decimalPlaces = dust.helpers.tap( params.decimalPlaces, chunk, context ) || 2;
 
     var radlat1 = Math.PI * lat1/180;
     var radlat2 = Math.PI * lat2/180;
