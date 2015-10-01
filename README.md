@@ -33,6 +33,9 @@ To include this module in your project add the following to your package.json
 
 ### Helpers
 
+- _calcDistance
+	A helper to calc straight distance using two locations with lat and long.
+
 - _loadTemplate
 	A special helper so we can load templates with a namespace.
 
