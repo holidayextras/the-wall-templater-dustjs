@@ -5,12 +5,14 @@ module.exports = function( dust ) {
 
   /*
   * @description Extend dustjs so we can calc distance from two lat + long
-  * @param {string} name template name
-  * @param {string} namespace path of the template
-  * @example {@_loadTemplate name="test" namespace="/templates" /} output template content
+  * @param {number} lat1 latitude of first position
+  * @param {number} lon1 longitude of first position
+  * @param {number} lat2 latitude of second position
+  * @param {number} lon2 longitude of second position
+  * @param {string} unit defaults to M (Miles), accepts K (Kilometers) and N (nautical miles)
+  * @param {number} decimalPlaces how many decimal places to return
+  * @example {@_calcDistance lat1=50.0000 lon1=0.12000 lat2=51.0000 lon2=0.11000- decimalPlaces=2} {/_calcDistance} output template distance
   */
-
-  //lat1, lon1, lat2, lon2, unit
 
   dust.helpers._calcDistance = function( chunk, context, bodies, params ) {
     var lat1 = dust.helpers.tap( params.lat1, chunk, context );
@@ -18,6 +20,7 @@ module.exports = function( dust ) {
     var lat2 = dust.helpers.tap( params.lat2, chunk, context );
     var lon2 = dust.helpers.tap( params.lon2, chunk, context );
     var unit = dust.helpers.tap( params.unit, chunk, context );
+    var decimalPlaces = dust.helpers.tap( params.decimalPlaces, chunk, context );
 
     var radlat1 = Math.PI * lat1/180;
     var radlat2 = Math.PI * lat2/180;
