@@ -17,6 +17,9 @@ describe( 'Load template - Dust helpers', function() {
         tap: function( valueToSearch ) {
           return valueToSearch || null;
         }
+      },
+      cache: {
+        '/templates/test': true
       }
     };
 

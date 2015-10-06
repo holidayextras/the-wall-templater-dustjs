@@ -1,7 +1,7 @@
 {
 	"name": "the-wall-templater-dustjs",
 	"description": "The Wall compatible template handler",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
 	"author": {
 		"name": "Shortbreaks",
@@ -23,7 +23,7 @@
 		"chai": "1.9.1",
 		"chai-as-promised": "4.1.1",
 		"istanbul": "0.3.13",
-		"make-up": "5.0.0",
+		"make-up": "5.3.1",
 		"mocha": "1.21.4",
 		"q-io": "1.11.5"
 	},
