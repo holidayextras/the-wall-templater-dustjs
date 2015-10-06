@@ -13,6 +13,15 @@ module.exports = function( dust ) {
   dust.helpers._loadTemplate = function( chunk, context, bodies, params ) {
     var name = dust.helpers.tap( params.name, chunk, context );
     var namespace = dust.helpers.tap( params.namespace, chunk, context );
-    return chunk.partial( namespace + name, context );
+    var filePath = namespace + name;
+
+    // If we have the partial in the cache
+    if( dust.cache[filePath] ) {
+      // Then lets render
+      return chunk.partial( namespace + name, context );
+    } else {
+      // Otherwise, we should just pass back nothing!
+      return chunk; 
+    }
   };
 };
