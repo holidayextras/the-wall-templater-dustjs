@@ -22,25 +22,27 @@ module.exports = function( dust ) {
     var unit = dust.helpers.tap( params.unit, chunk, context );
     var decimalPlaces = dust.helpers.tap( params.decimalPlaces, chunk, context ) || 2;
 
-    function degreeToRadian( degree ){
+    function degreeToRadian( degree ) {
       return Math.PI * degree / 180;
     }
 
     var radlat1 = degreeToRadian( lat1 );
     var radlat2 = degreeToRadian( lat2 );
-    var radlon1 = degreeToRadian( lon1 );
-    var radlon2 = degreeToRadian( lon2 );
-    var theta = lon1-lon2;
+    var theta = lon1 - lon2;
     var radtheta = degreeToRadian( theta );
     var dist = Math.sin( radlat1 ) * Math.sin( radlat2 ) + Math.cos( radlat1 ) * Math.cos( radlat2 ) * Math.cos( radtheta );
     dist = Math.acos( dist );
-    dist = dist * 180/Math.PI;
+    dist = dist * 180 / Math.PI;
     dist = dist * 60 * 1.1515;
-    
-    // k = kilometeres
-    // n = nautical miles.
-    if ( unit=="K" ) { dist = dist * 1.609344 }
-    if ( unit=="N" ) { dist = dist * 0.8684 }
+
+    // K = kilometeres
+    // N = nautical miles.
+    if ( unit === 'K' ) {
+      dist = dist * 1.609344;
+    }
+    if ( unit === 'N' ) {
+      dist = dist * 0.8684;
+    }
 
     return chunk.write( dist.toFixed( decimalPlaces ) );
   };

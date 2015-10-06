@@ -15,13 +15,8 @@ module.exports = function( dust ) {
     var namespace = dust.helpers.tap( params.namespace, chunk, context );
     var filePath = namespace + name;
 
-    // If we have the partial in the cache
-    if( dust.cache[filePath] ) {
-      // Then lets render
-      return chunk.partial( namespace + name, context );
-    } else {
-      // Otherwise, we should just pass back nothing!
-      return chunk; 
-    }
+    // If we have the partial in the cache then render
+    // else just fall back to basics
+    return dust.cache[filePath] ? chunk.partial( namespace + name, context ) : chunk;
   };
 };
