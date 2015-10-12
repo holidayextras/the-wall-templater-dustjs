@@ -25,7 +25,7 @@ $ npm install
 To include this module in your project add the following to your package.json
 
 ```
-"thewall-templater-dustjs": "git+ssh://git@github.com:holidayextras/the-wall-templater-dustjs.git"
+"the-wall-templater-dustjs": "git+ssh://git@github.com:holidayextras/the-wall-templater-dustjs.git"
 ```
 
 
