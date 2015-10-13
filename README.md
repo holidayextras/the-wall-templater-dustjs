@@ -33,6 +33,15 @@ To include this module in your project add the following to your package.json
 
 ### Helpers
 
+- _sortByNumber
+	Sorting method that orders a list of things based on a child node, which is a number
+
+- _sortByMapping
+	Sorting method that orders a list of things based on a provided map
+
+- _filterSeats
+	A filter that nests package rates under theatre sections - Needs to be moved
+
 - _calcDistance
 	A helper to calc straight distance using two locations with lat and long.
 
@@ -50,10 +59,6 @@ To include this module in your project add the following to your package.json
 
 - _forEach
 	Itterate through provided object/array/string.
-
-- _removeAllRoomRatesExceptCheapest
-	Find cheapest hotel and strip rest from api reply. Should be a temporary solution, too specific.
-
 
 ## Tests
 
