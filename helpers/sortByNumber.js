@@ -22,7 +22,7 @@ module.exports = function( dust ) {
 
     var mappedObject = sortBy( parent, node );
 
-    _.forEach( mappedObject, function( item ){
+    _.forEach( mappedObject, function( item ) {
       chunk = chunk.render( bodies.block, context.push( item ) );
     } );
 

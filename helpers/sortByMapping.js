@@ -19,10 +19,10 @@ module.exports = function( dust ) {
     var mappedObject = [];
 
     // For every item in map array
-    _.forEach( map, function( id ){
+    _.forEach( map, function( id ) {
       // For every event if the id = map id then add to mappedObject
-      _.forEach( eventsObject, function( event ){
-        if( event.id === id ){
+      _.forEach( eventsObject, function( event ) {
+        if ( event.id === id ) {
           mappedObject.push( event );
         }
       } );
@@ -34,7 +34,7 @@ module.exports = function( dust ) {
     // Release - the wall didn't like me deleting this, hence null.
     mappedObject = null;
 
-    _.forEach( eventsObject, function( item ){
+    _.forEach( eventsObject, function( item ) {
       chunk = chunk.render( bodies.block, context.push( item ) );
     } );
 
