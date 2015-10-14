@@ -23,7 +23,7 @@ module.exports = function( dust ) {
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
 
-    var cheapestRoom = { 
+    var cheapestRoom = {
       id: 0,
       price: -1
     };
@@ -51,9 +51,9 @@ module.exports = function( dust ) {
       // Find cheapest room rate ID
       _.forEach( roomRates, function( roomRate ) {
         if ( roomRate.grossPrice < cheapestRoom.price || cheapestRoom.price === -1 ) {
-          cheapestRoom = { 
-            id: roomRate.id, 
-            price: roomRate.grossPrice 
+          cheapestRoom = {
+            id: roomRate.id,
+            price: roomRate.grossPrice
           };
         }
       } );

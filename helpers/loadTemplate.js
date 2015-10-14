@@ -23,5 +23,6 @@ module.exports = function( dust ) {
     // else just fall back to basics
     // Push in all the params left on the helper
     return dust.cache[filePath] ? chunk.partial( namespace + name, context.push( params ).push( context.stack.head ) ) : chunk;
+
   };
 };
