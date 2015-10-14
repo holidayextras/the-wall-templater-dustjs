@@ -19,11 +19,14 @@ module.exports = function( dust ) {
     params = params || {};
 
     var packageRates = params.packageRates;
-    var venueProduct = params.venueProducts[0];
+    var venueProduct = _.first( params.venueProducts );
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
 
-    var cheapestRoom = { id: 0, price: -1 };
+    var cheapestRoom = { 
+      id: 0,
+      price: -1
+    };
 
     var reply = {};
 
@@ -32,8 +35,8 @@ module.exports = function( dust ) {
       // Make new node for every section a theatre has.
       _.forEach( venueProduct.sections, function( section, i ) {
         var item = {
-          'name': section,
-          'rates': []
+          name: section,
+          rates: []
         };
         reply[i] = item;
       } );
@@ -48,7 +51,10 @@ module.exports = function( dust ) {
       // Find cheapest room rate ID
       _.forEach( roomRates, function( roomRate ) {
         if ( roomRate.grossPrice < cheapestRoom.price || cheapestRoom.price === -1 ) {
-          cheapestRoom = { id: roomRate.id, price: roomRate.grossPrice };
+          cheapestRoom = { 
+            id: roomRate.id, 
+            price: roomRate.grossPrice 
+          };
         }
       } );
     }
