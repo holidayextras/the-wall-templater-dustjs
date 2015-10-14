@@ -46,7 +46,7 @@ To include this module in your project add the following to your package.json
 	A helper to calc straight distance using two locations with lat and long.
 
 - _loadTemplate
-	A special helper so we can load templates with a namespace.
+	A special helper so we can load templates with a namespace. Can pass through variables to the templates.
 
 - _formatDate
 	using `momentjs` this helper takes a date string and a format and returns a formatted date string.
