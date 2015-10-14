@@ -17,9 +17,6 @@ module.exports = function( dust ) {
     var parent = params.parent;
     var node = params.node;
 
-    delete params.parent;
-    delete params.node;
-
     var mappedObject = sortBy( parent, node );
 
     _.forEach( mappedObject, function( item ) {
