@@ -14,7 +14,7 @@ module.exports = function( dust ) {
   */
 
   dust.helpers._calcEndDate = function( chunk, context, bodies, params ) {
-    if(!params) {
+    if (!params) {
       return NaN;
     }
     params = params || {};
@@ -24,7 +24,4 @@ module.exports = function( dust ) {
     var format = dust.helpers.tap( params.format, chunk, context );
     return chunk.write( moment.utc( startDate ).add( nights, type ).format( format ) );
   };
-
-//.toISOString()
-
 };
