@@ -13,7 +13,7 @@ module.exports = function( dust ) {
   * @example {@_calcEndDate startDate="07/01/2015" nights="3" type="days" /} output "10/01/2015"
   */
 
-  dust.helpers._calcEndDate = function( chunk, context, bodies, params ) {
+  dust.helpers._calculateEndDate = function( chunk, context, bodies, params ) {
     if (!params) {
       return NaN;
     }

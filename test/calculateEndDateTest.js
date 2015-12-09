@@ -36,13 +36,13 @@ describe( 'Calculate end date - Dust helpers', function() {
       type: 'days'
     };
 
-    return dustMock.helpers._calcEndDate( chunkMock, null, null, params ).should.be.a( 'string' ).that.equals( '2015-10-10T00:00:00+00:00' );
+    return dustMock.helpers._calculateEndDate( chunkMock, null, null, params ).should.be.a( 'string' ).that.equals( '2015-10-10T00:00:00+00:00' );
   } );
 
   it( 'should return "NaN" when no params are passed', function() {
     var params = null;
 
-    return dustMock.helpers._calcEndDate( chunkMock, null, null, params ).should.be.deep.equal( NaN );
+    return dustMock.helpers._calculateEndDate( chunkMock, null, null, params ).should.be.deep.equal( NaN );
   } );
   it( 'should return error, "negative numbers are not allowed" when negative night amount is passed', function() {
     var params = {
@@ -51,7 +51,7 @@ describe( 'Calculate end date - Dust helpers', function() {
       type: 'days'
     };
 
-    return dustMock.helpers._calcEndDate( chunkMock, null, null, params ).should.be.a( 'string' ).that.equals( 'Negative numbers are not allowed.' );
+    return dustMock.helpers._calculateEndDate( chunkMock, null, null, params ).should.be.a( 'string' ).that.equals( 'Negative numbers are not allowed.' );
   } );
 
 } );
