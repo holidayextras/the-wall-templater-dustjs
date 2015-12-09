@@ -17,6 +17,9 @@ module.exports = function( dust ) {
     if (!params) {
       return NaN;
     }
+    if (params.nights < 0) {
+      return 'Negative numbers are not allowed.';
+    }
     params = params || {};
     var startDate = dust.helpers.tap( params.startDate, chunk, context );
     var nights = dust.helpers.tap( params.nights, chunk, context );
