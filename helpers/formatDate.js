@@ -17,7 +17,7 @@ module.exports = function( dust ) {
     var date = dust.helpers.tap( params.date, chunk, context );
     var format = dust.helpers.tap( params.format, chunk, context );
     // simply use moment to turn the passed date into the passed ofrmat
-    return chunk.write( moment( date ).format( format ) );
+    return chunk.write( moment.utc( date ).format( format ) );
   };
 
 };
