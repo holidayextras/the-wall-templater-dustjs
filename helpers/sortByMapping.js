@@ -35,12 +35,12 @@ module.exports = function( dust ) {
     // For every item in map array passed
     _.forEach( map, function( id ) {
       // Loop over the object to be sorted
-      _.forEach( sortObject, function( event ) {
-        var requiredProduct = sortParameters( event, keysParam );
+      _.forEach( sortObject, function( matchObject ) {
+        var requiredProduct = sortParameters( matchObject, keysParam );
         // Is the product in the map
         if ( _.include( id, requiredProduct ) ) {
           // If it matches need to push this object into mappedObject
-          mappedObject.push( event );
+          mappedObject.push( matchObject );
         }
       } );
     } );
