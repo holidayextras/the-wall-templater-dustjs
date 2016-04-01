@@ -23,15 +23,14 @@ module.exports = function( dust ) {
 
     var mappedObject = [];
 
-    var sortParameters = function( events, params ) {
+    var sortParameters = function( events, sortparams ) {
       // Loop over sort parameter structure passed in tpl
-      for(var i=0; i< params.length; i++) { 
-        if(!events) return null;
-        events = events[params[i]];
+      for ( var i=0; i < sortparams.length; i ++ ) { 
+        if ( !events ) return null;
+        events = events[sortparams[i]];
       }
       return events;
-    }
-    
+    };
     // For every item in map array passed
     _.forEach( map, function( id ) {
       // Loop over the object to be sorted
