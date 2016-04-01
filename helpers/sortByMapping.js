@@ -25,7 +25,7 @@ module.exports = function( dust ) {
 
     var sortParameters = function( events, sortparams ) {
       // Loop over sort parameter structure passed in tpl
-      for ( var i=0; i < sortparams.length; i ++ ) { 
+      for ( var i = 0; i < sortparams.length; i++ ) {
         if ( !events ) return null;
         events = events[sortparams[i]];
       }
