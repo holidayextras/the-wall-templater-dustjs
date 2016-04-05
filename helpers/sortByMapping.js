@@ -16,29 +16,29 @@ module.exports = function( dust ) {
   dust.helpers._sortByMapping = function( chunk, context, bodies, params ) {
     // Object to sort
     var sortObject = params.sortObject;
-    // Map to sort to
+    // Mapping to sort to the object to
     var map = params.map;
-    // Keys required for mapping
-    var keysParam = params.indexes.split(', ');
+    // Index structure required for correct mapping
+    var keysParam = params.indexes.split(',');
 
     var mappedObject = [];
 
     var pickParameters = function( matchedobject, pickparams ) {
-      // Loop over sort parameter structure passed in tpl
+      // Loop over the sort parameter structure provided from the tpl
       for ( var i = 0; i < pickparams.length; i++ ) {
         if ( !matchedobject ) return null;
         matchedobject = matchedobject[pickparams[i]];
       }
       return matchedobject;
     };
-    // For every item in map array passed
+    // Loop over the mapping order provided
     _.forEach( map, function( id ) {
       // Loop over the object to be sorted
       _.forEach( sortObject, function( matchObject ) {
         var requiredProduct = pickParameters( matchObject, keysParam );
-        // Is the product in the map array?
+        // Is the value in the map array?
         if ( _.include( id, requiredProduct ) ) {
-          // If it matches need to push this object into mappedObject
+          // If it matches then push this object into the mappedObject
           mappedObject.push( matchObject );
         }
       } );
