@@ -37,9 +37,9 @@ module.exports = function( dust ) {
       // Loop over the object to be sorted
       _.forEach( sortObject, function( matchObject ) {
         var requiredProduct = pickParameters( matchObject, keysParam );
-        // Is the value in the map array?
+        // Take the result of the sort object search to check if the value in the map array?
         if ( _.include( id, requiredProduct ) ) {
-          // If it matches then push this object into the mappedObject
+          // If it is in the map then push this object into the mappedObject
           mappedObject.push( matchObject );
         }
       } );
