@@ -11,6 +11,7 @@ module.exports = function( dust ) {
   * @param {string} map - Map to use to sort with
   * @param {string} indexes - index structure of response to sort on
   * @example {@_sortByMapping sortObject=packageRatesReply.packageRates indexes="links, hotelProducts, ids" map="PAUGLA, PAUFOR, PAUELM, PAUFAR"} {/_sortByMapping}
+  * At present their is no unit test coverage for this helper, this is being addressed by changing the structure of our helpers to ensure functions available outside scope of dust
   */
 
   dust.helpers._sortByMapping = function( chunk, context, bodies, params ) {
@@ -24,7 +25,7 @@ module.exports = function( dust ) {
     var mappedObject = [];
 
     var pickParameters = function( matchedobject, pickparams ) {
-      // Loop over the sort parameter structure provided from the tpl
+      // Loop over the object to be sorted using the index structure provided from the tpl
       for ( var i = 0; i < pickparams.length; i++ ) {
         if ( !matchedobject ) return null;
         matchedobject = matchedobject[pickparams[i]];
