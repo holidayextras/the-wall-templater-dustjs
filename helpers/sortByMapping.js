@@ -26,10 +26,10 @@ module.exports = function( dust ) {
 
     var pickParameters = function( matchedObject, pickParams ) {
       // Loop over the object to be sorted using the index structure provided from the tpl
-      for ( var i = 0; i < pickParams.length; i++ ) {
+      _.forEach(pickParams, function( value, key ) {
         if ( !matchedObject ) return null;
-        matchedObject = matchedObject[pickParams[i]];
-      }
+        matchedObject = matchedObject[pickParams[key]]
+      });
       return matchedObject;
     };
     // Loop over the mapping order provided
