@@ -28,7 +28,7 @@ module.exports = function( dust ) {
       // Loop over the object to be sorted using the index structure provided from the tpl
       _.forEach(pickParams, function( value, key ) {
         if ( !matchedObject ) return null;
-        matchedObject = matchedObject[pickParams[key]]
+        matchedObject = matchedObject[pickParams[key]];
       });
       return matchedObject;
     };
