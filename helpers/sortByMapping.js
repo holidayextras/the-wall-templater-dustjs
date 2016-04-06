@@ -7,34 +7,48 @@ module.exports = function( dust ) {
 
   /*
   * @description Sorting method that orders a list of things based on a provided map
-  * @param {object} eventsObject Object to sort
-  * @param {string} map Map to use to sort with
-  * @example {@_sortByMapping eventsObject=eventsReply.events map="ASHLKE, ASHWKE, ASHJBE} {/_sortByMapping} output loop of events
+  * @param {object} sortObject - Object you wish to sort
+  * @param {array} map - Order you wish to sort the sortObject
+  * @param {string} indexes - The node structure of object you are sorting by
+  * @example {@_sortByMapping sortObject=packageRatesReply.packageRates indexes="links, hotelProducts, ids" map="PAUGLA, PAUFOR, PAUELM, PAUFAR"} {/_sortByMapping}
+  * At present their is no unit test coverage for this helper, this is being addressed by changing the structure of our helpers to ensure functions available outside scope of dust
   */
 
   dust.helpers._sortByMapping = function( chunk, context, bodies, params ) {
-    var eventsObject = params.eventsObject;
-    var map = params.map.split(','); // Split string into array
+    // Object to sort
+    var sortObject = params.sortObject;
+    // Mapping to sort to the object to
+    var sortMap = params.map;
+    // Index structure required for correct mapping
+    var sortIndex = params.indexes.split(',');
 
     var mappedObject = [];
 
-    // For every item in map array
-    _.forEach( map, function( id ) {
-      // For every event if the id = map id then add to mappedObject
-      _.forEach( eventsObject, function( event ) {
-        if ( event.id === id ) {
-          mappedObject.push( event );
+    var pickParameters = function( matchedObject, pickParams ) {
+      // Loop over the object to be sorted using the index structure provided from the tpl
+      _.forEach(pickParams, function( value, key ) {
+        if ( !matchedObject ) return null;
+        matchedObject = matchedObject[pickParams[key]];
+      });
+      return matchedObject;
+    };
+    // Loop over the mapping order provided
+    _.forEach( sortMap, function( id ) {
+      // Loop over the object to be sorted
+      _.forEach( sortObject, function( matchObject ) {
+        var requiredProduct = pickParameters( matchObject, sortIndex );
+        // Take the result of the sort object search to check if the value in the map array?
+        if ( _.include( id, requiredProduct ) ) {
+          // If it is in the map then push this object into the mappedObject
+          mappedObject.push( matchObject );
         }
       } );
     } );
 
-    // Smush everything else we havn't already addedd into events
-    eventsObject = _.union( mappedObject, eventsObject );
+    // Smush everything else we havn't already added into sortObject
+    sortObject = _.union( mappedObject, sortObject );
 
-    // Release - the wall didn't like me deleting this, hence null.
-    mappedObject = null;
-
-    _.forEach( eventsObject, function( item ) {
+    _.forEach( sortObject, function( item ) {
       chunk = chunk.render( bodies.block, context.push( item ) );
     } );
 
