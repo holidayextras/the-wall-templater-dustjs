@@ -49,7 +49,7 @@ module.exports = function( dust ) {
     sortObject = _.union( mappedObject, sortObject );
 
     _.forEach( sortObject, function( value, key ) {
-      value.order = (key+1);
+      value.order = ( key + 1 );
       chunk = chunk.render( bodies.block, context.push( value ) );
     } );
 
