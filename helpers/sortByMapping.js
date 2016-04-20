@@ -48,8 +48,9 @@ module.exports = function( dust ) {
     // Smush everything else we havn't already added into sortObject
     sortObject = _.union( mappedObject, sortObject );
 
-    _.forEach( sortObject, function( item ) {
-      chunk = chunk.render( bodies.block, context.push( item ) );
+    _.forEach( sortObject, function( value, key ) {
+      value.order = ( key + 1 );
+      chunk = chunk.render( bodies.block, context.push( value ) );
     } );
 
     return chunk;
