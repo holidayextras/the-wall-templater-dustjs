@@ -1,50 +1,44 @@
-/* jslint node: true */
 'use strict';
 
-var chai = require( 'chai' );
-var chaiAsPromised = require( 'chai-as-promised' );
-chai.use( chaiAsPromised );
-chai.should();
+var expect = require('chai').expect;
 
 var dustMock;
 var chunkMock;
 
-describe( 'Format number - Dust helpers', function() {
+describe('Format number - Dust helpers', function() {
 
-  before( function( done ) {
+  before(function(done) {
     dustMock = {
       helpers: {
-        tap: function( valueToSearch ) {
+        tap: function(valueToSearch) {
           return valueToSearch || null;
         }
       }
     };
 
     chunkMock = {
-      write: function( value ) {
+      write: function(value) {
         return value;
       }
     };
 
-    require( '../helpers/formatNumber.js' )( dustMock );
+    require('../helpers/formatNumber.js')(dustMock);
     done();
-  } );
+  });
 
-  it( 'should return "1,000.00" from 1000', function( done ) {
+  it('should return "1,000.00" from 1000', function() {
     var params = {
       number: 1000,
       format: '[0,000].00'
     };
 
-    dustMock.helpers._formatNumber( chunkMock, null, null, params ).should.be.equal( '1,000.00' );
-    done();
-  } );
+    expect(dustMock.helpers._formatNumber(chunkMock, null, null, params)).to.equal('1,000.00');
+  });
 
-  it( 'should return "0" when no params are passed', function( done ) {
+  it('should return "0" when no params are passed', function() {
     var params = null;
 
-    dustMock.helpers._formatNumber( chunkMock, null, null, params ).should.be.deep.equal( '0' );
-    done();
-  } );
+    expect(dustMock.helpers._formatNumber(chunkMock, null, null, params)).to.equal('0');
+  });
 
-} );
+});

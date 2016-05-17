@@ -1,40 +1,48 @@
 {
-	"name": "the-wall-templater-dustjs",
-	"description": "The Wall compatible template handler",
-	"version": "3.0.1",
-	"homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
-	"author": {
-		"name": "Shortbreaks",
-		"email": "shortbreaksdev@holidayextras.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:holidayextras/the-wall-templater-dustjs.git"
-	},
-	"license": "MIT",
-	"main": "index",
-	"engines": {
-		"node": ">= 0.10.0"
-	},
-	"scripts": {
-		"test": "node_modules/deployment-helpers/nodeApps/preRelease.sh && node_modules/.bin/make-up lib helpers test; istanbul cover _mocha -- --recursive test/ -R spec"
-	},
-	"devDependencies": {
-		"chai": "1.9.1",
-		"chai-as-promised": "4.1.1",
-		"deployment-helpers": "git+ssh://git@github.com:holidayextras/deployment-helpers.git",
-		"istanbul": "0.3.13",
-		"make-up": "5.3.1",
-		"mocha": "1.21.4",
-		"q-io": "1.11.5"
-	},
-	"dependencies": {
-		"dustjs-helpers": "1.7.1",
-		"dustjs-linkedin": "2.7.2",
-		"joi": "4.6.2",
-		"lodash": "2.4.1",
-		"moment": "2.8.3",
-		"numeral": "1.5.3",
-		"q": "1.0.1"
-	}
+  "name": "the-wall-templater-dustjs",
+  "description": "The Wall compatible template handler",
+  "version": "3.1.0",
+  "homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
+  "author": {
+    "name": "Shortbreaks",
+    "email": "shortbreaksdev@holidayextras.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:holidayextras/the-wall-templater-dustjs.git"
+  },
+  "license": "MIT",
+  "main": "index",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "ci": "istanbul cover _mocha -- -R xunit > $CIRCLE_TEST_REPORTS/unit/results.xml",
+    "postci": "istanbul check-coverage",
+    "lint": "make-up lib helpers",
+    "prerelease": "node_modules/deployment-helpers/nodeApps/preRelease.sh",
+    "start": "scripts/startup.sh",
+    "pretest": "npm run prerelease",
+    "test": "npm run lint && npm run test:coverage",
+    "test:coverage": "istanbul cover _mocha",
+    "posttest": "istanbul check-coverage"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "deployment-helpers": "git+ssh://git@github.com:holidayextras/deployment-helpers.git",
+    "istanbul": "0.3.13",
+    "make-up": "^9.1.0",
+    "mocha": "^2.4.5",
+    "q-io": "1.11.5"
+  },
+  "dependencies": {
+    "dustjs-helpers": "1.7.1",
+    "dustjs-linkedin": "2.7.2",
+    "joi": "4.6.2",
+    "lodash": "4.12.0",
+    "moment": "2.8.3",
+    "numeral": "1.5.3",
+    "q": "1.0.1"
+  }
 }

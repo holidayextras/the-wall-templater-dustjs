@@ -1,50 +1,44 @@
-/* jslint node: true */
 'use strict';
 
-var chai = require( 'chai' );
-var chaiAsPromised = require( 'chai-as-promised' );
-chai.use( chaiAsPromised );
-chai.should();
+var expect = require('chai').expect;
 
 var dustMock;
 var chunkMock;
 
-describe( 'Format date - Dust helpers', function() {
+describe('Format date - Dust helpers', function() {
 
-  before( function( done ) {
+  before(function(done) {
     dustMock = {
       helpers: {
-        tap: function( valueToSearch ) {
+        tap: function(valueToSearch) {
           return valueToSearch || null;
         }
       }
     };
 
     chunkMock = {
-      write: function( value ) {
+      write: function(value) {
         return value;
       }
     };
 
-    require( '../helpers/formatDate.js' )( dustMock );
+    require('../helpers/formatDate.js')(dustMock);
     done();
-  } );
+  });
 
-  it( 'should return "2015-01-07" from 2015-01-07', function( done ) {
+  it('should return "2015-01-07" from 2015-01-07', function() {
     var params = {
       date: '01/07/2015', // american date :(
       format: 'YYYY-MM-DD'
     };
 
-    dustMock.helpers._formatDate( chunkMock, null, null, params ).should.be.equal( '2015-01-07' );
-    done();
-  } );
+    expect(dustMock.helpers._formatDate(chunkMock, null, null, params)).to.be.equal('2015-01-07');
+  });
 
-  it( 'should return "Invalid date" when no params are passed', function( done ) {
+  it('should return "Invalid date" when no params are passed', function() {
     var params = null;
 
-    dustMock.helpers._formatDate( chunkMock, null, null, params ).should.be.deep.equal( 'Invalid date' );
-    done();
-  } );
+    expect(dustMock.helpers._formatDate(chunkMock, null, null, params)).to.be.deep.equal('Invalid date');
+  });
 
-} );
+});
