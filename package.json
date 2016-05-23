@@ -21,7 +21,6 @@
     "postci": "istanbul check-coverage",
     "lint": "make-up lib helpers",
     "prerelease": "node_modules/deployment-helpers/nodeApps/preRelease.sh",
-    "start": "scripts/startup.sh",
     "pretest": "npm run prerelease",
     "test": "npm run lint && npm run test:coverage",
     "test:coverage": "istanbul cover _mocha",
