@@ -73,5 +73,5 @@ Code is linted checked against the style guide with [make-up](https://github.com
 
 
 ## License
-Copyright (c) 2014 Shortbreaks
+Copyright (c) 2016 Shortbreaks
 Licensed under the MIT license.
