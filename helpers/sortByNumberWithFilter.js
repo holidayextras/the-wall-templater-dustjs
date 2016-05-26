@@ -22,7 +22,7 @@ module.exports = function(dust) {
     var mappedObject = sortBy(parent, node);
     var newMappedObject = [];
 
-    //if filterArray exists, filter out from mappedObject 
+    //if filterArray exists, filter out from mappedObject
     if (filterArray.length) {
       newMappedObject = _.filter(mappedObject, function(x) {
         //filter mapped object, removing objects from filter array
