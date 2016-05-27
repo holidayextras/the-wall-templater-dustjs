@@ -17,6 +17,7 @@ module.exports = function(dust) {
     var parent = params.parent;
     var node = params.node;
     var filterArray = params.filterArray;
+    console.log('filterArray', filterArray);
     //var filterValue = params.filterValue;
 
     var mappedObject = sortBy(parent, node);
