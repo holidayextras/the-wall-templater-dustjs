@@ -7,6 +7,8 @@ var sortBy = require('../lib/sortBy');
 module.exports = function(dust) {
 
   /*
+   * @disclaimer - this is a temporary filter helper to separate a recommended hotel(s) from a list of hotels. This is temporary because it's written in dust, which will change soon.
+   *
    * @description Augmented sorting method that orders a list of things based on a child node, and then filters the result based on an object and a value. 
    * @param {object} parent Object to sort
    * @param {string} node Child node to sort object by
@@ -14,7 +16,7 @@ module.exports = function(dust) {
    * @param {string} filterValue - value to check against in the filter function
    * @param {boolean as string} exclude - if 'true', the filter function will exclude all items in the filterArray, based on the filterValue
    * @param {boolean as string} include - if 'true', the filter function will include all items in the filterArray, based on the filterValue
-   * @example {@_sortByNumberWithFilter parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortByNumberWithFilter} output loop of parent object sorted by node
+   * @example {@_sortByNumberWithFilter parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortByNumberWithFilter} output loop of parent object sorted by node and filtered by filterArray
    */
 
   dust.helpers._sortByNumberWithFilter = function(chunk, context, bodies, params) {
