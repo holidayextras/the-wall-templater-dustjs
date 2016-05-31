@@ -9,7 +9,7 @@ module.exports = function(dust) {
   /*
    * @disclaimer - this is a temporary filter helper to separate a recommended hotel(s) from a list of hotels. This is temporary because it's written in dust, which will change soon.
    *
-   * @description Augmented sorting method that orders a list of things based on a child node, and then filters the result based on an object and a value.
+   * @description Augmented sorting method that orders a list of things based on a child node, and then filters the result based on an object and a value .
    * @param {object} parent Object to sort
    * @param {string} node Child node to sort object by
    * @param {object} filterArray - array to base the filter on
