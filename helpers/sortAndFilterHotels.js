@@ -29,7 +29,7 @@ module.exports = function(dust) {
     var newMappedObject = [];
 
     //if filterArray exists, filter out from mappedObject
-    if (filterArray.length && filterValue) {
+    if (filterArray.length) {
       if (exclude) {
         newMappedObject = _.filter(mappedObject, function(x) {
           //filter mapped object, exclude all recommended hotels from hotels list
