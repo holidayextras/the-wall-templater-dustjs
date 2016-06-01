@@ -26,11 +26,11 @@ module.exports = function(dust) {
 
     //if filterArray exists, filter out from mappedObject
     if (filterArray.length && params.isIncludedInArray) {
-        newMappedObject = _.filter(mappedObject, function(object) {
-          //filter mapped object, exclude all recommended hotels from h(otels list
-          var hotelIndex = filterArray.indexOf(object.links.hotelProducts.ids[0]);
-          return (params.isIncludedInArray === 'true') ? hotelIndex > -1 : hotelIndex < 0;
-        });
+      newMappedObject = _.filter(mappedObject, function(object) {
+        //filter mapped object, exclude all recommended hotels from h(otels list
+        var hotelIndex = filterArray.indexOf(object.links.hotelProducts.ids[0]);
+        return (params.isIncludedInArray === 'true') ? hotelIndex > -1 : hotelIndex < 0;
+      });
     }
 
     if (newMappedObject.length) {
