@@ -19,26 +19,22 @@ module.exports = function(dust) {
    */
 
   dust.helpers._sortAndFilterHotels = function(chunk, context, bodies, params) {
-    var parent = params.parent;
-    var node = params.node;
     var filterArray = params.filterArray;
-    var include = params.include;
-    var exclude = params.exclude;
 
-    var mappedObject = sortBy(parent, node);
+    var mappedObject = sortBy(params.parent, params.node);
     var newMappedObject = [];
 
     //if filterArray exists, filter out from mappedObject
     if (filterArray.length) {
-      if (exclude) {
-        newMappedObject = _.filter(mappedObject, function(x) {
+      if (params.exclude) {
+        newMappedObject = _.filter(mappedObject, function(object) {
           //filter mapped object, exclude all recommended hotels from hotels list
-          return filterArray.indexOf(x.links.hotelProducts.ids[0]) < 0;
+          return filterArray.indexOf(object.links.hotelProducts.ids[0]) < 0;
         });
-      } else if (include) {
-        newMappedObject = _.filter(mappedObject, function(x) {
+      } else if (params.include) {
+        newMappedObject = _.filter(mappedObject, function(object) {
           //filter mapped object, only keep recommended hotels
-          return filterArray.indexOf(x.links.hotelProducts.ids[0]) > -1;
+          return filterArray.indexOf(object.links.hotelProducts.ids[0]) > -1;
         });
       }
     }
