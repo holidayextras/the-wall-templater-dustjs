@@ -25,18 +25,12 @@ module.exports = function(dust) {
     var newMappedObject = [];
 
     //if filterArray exists, filter out from mappedObject
-    if (filterArray.length) {
-      if (params.exclude) {
+    if (filterArray.length && params.isIncludedInArray) {
         newMappedObject = _.filter(mappedObject, function(object) {
-          //filter mapped object, exclude all recommended hotels from hotels list
-          return filterArray.indexOf(object.links.hotelProducts.ids[0]) < 0;
+          //filter mapped object, exclude all recommended hotels from h(otels list
+          var hotelIndex = filterArray.indexOf(object.links.hotelProducts.ids[0]);
+          return (params.isIncludedInArray === 'true') ? hotelIndex > -1 : hotelIndex < 0;
         });
-      } else if (params.include) {
-        newMappedObject = _.filter(mappedObject, function(object) {
-          //filter mapped object, only keep recommended hotels
-          return filterArray.indexOf(object.links.hotelProducts.ids[0]) > -1;
-        });
-      }
     }
 
     if (newMappedObject.length) {
