@@ -13,9 +13,8 @@ module.exports = function(dust) {
    * @param {object} parent Object to sort
    * @param {string} node Child node to sort object by
    * @param {object} filterArray - array to base the filter on
-   * @param {boolean as string} exclude - if 'true', the filter function will exclude all items in the filterArray, based on the filterValue
-   * @param {boolean as string} include - if 'true', the filter function will include all items in the filterArray
-   * @example {@_sortAndFilterHotels parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortAndFilterHotels} output loop of parent object sorted by node and filtered by filterArray
+   * @param {boolean as string} isIncludedInArray - if 'true', the filter function will exclude all items in the filterArray, based on the filterValue. If false, the filter function will include only the items in the filterArray
+    * @example {@_sortAndFilterHotels parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortAndFilterHotels} output loop of parent object sorted by node and filtered by filterArray
    */
 
   dust.helpers._sortAndFilterHotels = function(chunk, context, bodies, params) {
