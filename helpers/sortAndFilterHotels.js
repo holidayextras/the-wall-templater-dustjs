@@ -14,7 +14,7 @@ module.exports = function(dust) {
    * @param {string} node Child node to sort object by
    * @param {object} filterArray - array to base the filter on
    * @param {boolean as string} isIncludedInArray - if 'true', the filter function will exclude all items in the filterArray, based on the filterValue. If false, the filter function will include only the items in the filterArray
-    * @example {@_sortAndFilterHotels parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortAndFilterHotels} output loop of parent object sorted by node and filtered by filterArray
+   * @example {@_sortAndFilterHotels parent=packageRatesReply.packageRates node="grossPrice" filterArray=_brandConfig.featuredHotel filterValue="x.links.hotelProducts.ids[0]" include="true"} {/_sortAndFilterHotels} output loop of parent object sorted by node and filtered by filterArray
    */
 
   dust.helpers._sortAndFilterHotels = function(chunk, context, bodies, params) {
@@ -35,10 +35,9 @@ module.exports = function(dust) {
     if (newMappedObject.length) {
       mappedObject = newMappedObject;
     }
-    _.forEach(mappedObject, function(item) {
+
+    return mappedObject.map(function(item) {
       chunk = chunk.render(bodies.block, context.push(item));
     });
-
-    return chunk;
   };
 };
