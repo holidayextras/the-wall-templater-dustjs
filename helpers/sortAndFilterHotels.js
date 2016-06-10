@@ -1,6 +1,6 @@
 /* jslint node: true */
 
-'use strict ';
+'use strict';
 
 var sortBy = require( '../lib/sortBy' );
 
