@@ -1,7 +1,6 @@
 /* jslint node: true */
 'use strict';
 
-var _ = require('lodash');
 var sortBy = require('../lib/sortBy');
 
 module.exports = function(dust) {
@@ -24,12 +23,13 @@ module.exports = function(dust) {
     var newMappedObject = [];
 
     // check whether hotels in the filterArray are in the overall list   
-    var mappedObjectContainsFilterArray = mappedObject
-      .map(function (object) {
+    var mappedObjectContainsFilterArray =
+      mappedObject
+      .map(function(object) {
         // get the IDs of all hotels in the list
         return object.links.hotelProducts.ids[0];
       })
-      .filter(function (hotelID) {
+      .filter(function(hotelID) {
         // only return hotels with the ID of those in the filterArray 
         return filterArray.indexOf(hotelID) > -1;
       })
@@ -51,13 +51,14 @@ module.exports = function(dust) {
     }
     //if we are filtering only the hotels from filterArray, and the filterArray hotel
     //isn't in the overall list, then don't return anything
-    //otherwise, return list 
+    //otherwise, return the filtered list 
     if (params.isIncludedInArray === 'true' && !mappedObjectContainsFilterArray) {
       return false;
-    } else {
-      return mappedObject.map(function(item) {
-        chunk = chunk.render(bodies.block, context.push(item));
-      });
     }
+
+    return mappedObject.map(function(item) {
+      chunk = chunk.render(bodies.block, context.push(item));
+    });
+
   };
 };
