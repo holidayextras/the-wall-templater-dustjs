@@ -19,6 +19,10 @@ module.exports = function( dust ) {
   dust.helpers._sortAndFilterHotels = function( chunk, context, bodies, params ) {
     var filterArray = params.filterArray;
 
+    if ( !filterArray.length ) {
+      return false;
+    }
+
     var mappedObject = sortBy( params.parent, params.node );
     var newMappedObject = [];
 
@@ -37,7 +41,7 @@ module.exports = function( dust ) {
       .length;
 
     //if filterArray exists, filter out from mappedObject
-    if ( filterArray.length && params.isIncludedInArray ) {
+    if ( params.isIncludedInArray ) {
       newMappedObject = mappedObject.filter( function( object ) {
         //filter mapped object, include/exclude recommended hotels from
         //hotels list based on params.isIncludedInArray value
