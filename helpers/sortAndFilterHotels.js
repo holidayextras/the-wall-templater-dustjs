@@ -23,21 +23,41 @@ module.exports = function(dust) {
     var mappedObject = sortBy(params.parent, params.node);
     var newMappedObject = [];
 
+    // check whether hotels in the filterArray are in the overall list   
+    var mappedObjectContainsFilterArray = mappedObject
+      .map(function (object) {
+        // get the IDs of all hotels in the list
+        return object.links.hotelProducts.ids[0];
+      })
+      .filter(function (hotelID) {
+        // only return hotels with the ID of those in the filterArray 
+        return filterArray.indexOf(hotelID) > -1;
+      })
+      //count
+      .length;
+
     //if filterArray exists, filter out from mappedObject
     if (filterArray.length && params.isIncludedInArray) {
-      newMappedObject = _.filter(mappedObject, function(object) {
-        //filter mapped object, exclude all recommended hotels from hotels list
+      newMappedObject = mappedObject.filter(function(object) {
+        //filter mapped object, include/exclude recommended hotels from
+        //hotels list based on params.isIncludedInArray value
         var hotelIndex = filterArray.indexOf(object.links.hotelProducts.ids[0]);
         return (params.isIncludedInArray === 'true') ? hotelIndex > -1 : hotelIndex < 0;
       });
+      //if this new mapped object has anything in it, set it to mappedObject
+      if (newMappedObject.length) {
+        mappedObject = newMappedObject;
+      }
     }
-
-    if (newMappedObject.length) {
-      mappedObject = newMappedObject;
+    //if we are filtering only the hotels from filterArray, and the filterArray hotel
+    //isn't in the overall list, then don't return anything
+    //otherwise, return list 
+    if (params.isIncludedInArray === 'true' && !mappedObjectContainsFilterArray) {
+      return false;
+    } else {
+      return mappedObject.map(function(item) {
+        chunk = chunk.render(bodies.block, context.push(item));
+      });
     }
-
-    return mappedObject.map(function(item) {
-      chunk = chunk.render(bodies.block, context.push(item));
-    });
   };
 };
