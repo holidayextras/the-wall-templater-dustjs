@@ -72,6 +72,7 @@ module.exports = function(dust) {
             if (ticketRates[packageRate.ids].priceBand === bandKey) {
               // match transformer config to existing priceBand
               ticketRates[packageRate.ids].colour = bandValue;
+              packageRate.colour = bandValue;
             }
           });
         }
