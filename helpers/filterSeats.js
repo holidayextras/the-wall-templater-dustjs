@@ -21,7 +21,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    var transformer = params.transformer;
+    var bandColours = params.transformer;
 
     var cheapestRoom = {
       id: 0,
@@ -62,7 +62,7 @@ module.exports = function(dust) {
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(packageRate) {
       // assign gold, silver, bronze to packages depending on their current priceBand
-      _.forEach(transformer, function(sectionValue, sectionKey) {
+      _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
         if (ticketRates[packageRate.links.ticketRates.ids].section === sectionKey || ticketRates[packageRate.links.ticketRates.ids].section.indexOf( sectionKey ) > -1 ) {
@@ -84,7 +84,9 @@ module.exports = function(dust) {
         // If so then we want to add this packageRate under the theatre section.
         if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
           // WEB-8081
-          assignColoursToBands(packageRate.links.ticketRates);
+          if(bandColours !== null) {
+              assignColoursToBands(packageRate.links.ticketRates);
+          }
           reply[i].rates.push(packageRate);
         }
       });
