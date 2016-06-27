@@ -21,7 +21,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    transformer = params.transformer;
+    var transformer = params.transformer;
 
     var cheapestRoom = {
       id: 0,
@@ -59,21 +59,8 @@ module.exports = function(dust) {
       });
     }
 
-    function loopReplySections(packageRate) {
-      // For every section in the stubbed out reply
-      // check if the current package rate is in the current section
-      _.forEach(reply, function(item, i) {
-        // If so then we want to add this packageRate under the theatre section.
-        if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
-          // WEB-8081
-          assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids]);
-          reply[i].rates.push(packageRate);
-        }
-      });
-    }
-
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
-    function assignColoursToBands(packageRate, ticketRates) {
+    function assignColoursToBands() {
       // assign gold, silver, bronze to packages depending on their current priceBand
       _.forEach(transformer, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
@@ -86,6 +73,19 @@ module.exports = function(dust) {
               ticketRates[packageRate.links.ticketRates.ids].colour = bandValue;
             }
           });
+        }
+      });
+    }
+
+    function loopReplySections(packageRate) {
+      // For every section in the stubbed out reply
+      // check if the current package rate is in the current section
+      _.forEach(reply, function(item, i) {
+        // If so then we want to add this packageRate under the theatre section.
+        if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
+          // WEB-8081
+          assignColoursToBands();
+          reply[i].rates.push(packageRate);
         }
       });
     }
