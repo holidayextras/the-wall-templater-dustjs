@@ -84,8 +84,8 @@ module.exports = function(dust) {
         // If so then we want to add this packageRate under the theatre section.
         if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
           // WEB-8081
-          if(bandColours !== null) {
-              assignColoursToBands(packageRate.links.ticketRates);
+          if (bandColours !== null) {
+            assignColoursToBands(packageRate.links.ticketRates);
           }
           reply[i].rates.push(packageRate);
         }
