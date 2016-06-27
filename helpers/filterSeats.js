@@ -21,6 +21,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
+    transformer = params.transformer;
 
     var cheapestRoom = {
       id: 0,
@@ -65,7 +66,7 @@ module.exports = function(dust) {
         // If so then we want to add this packageRate under the theatre section.
         if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
           // WEB-8081
-          var colourNew = assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids]);
+          assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids]);
           reply[i].rates.push(packageRate);
         }
       });
@@ -77,12 +78,12 @@ module.exports = function(dust) {
       _.forEach(transformer, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if(ticketRates.section === sectionKey || ticketRates.section.indexOf( sectionKey ) > -1 ) {
+        if (ticketRates[packageRate.links.ticketRates.ids].section === sectionKey || ticketRates[packageRate.links.ticketRates.ids].section.indexOf( sectionKey ) > -1 ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
-            if(ticketRates.priceBand === bandKey) {
+            if (ticketRates[packageRate.links.ticketRates.ids].priceBand === bandKey) {
               // match transformer config to existing priceBand
-              ticketRates.colour = bandValue;
+              ticketRates[packageRate.links.ticketRates.ids].colour = bandValue;
             }
           });
         }
