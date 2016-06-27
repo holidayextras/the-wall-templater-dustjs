@@ -61,7 +61,6 @@ module.exports = function(dust) {
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(packageRate) {
-      console.log( '**', packageRate );
       // assign gold, silver, bronze to packages depending on their current priceBand
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
