@@ -60,18 +60,18 @@ module.exports = function(dust) {
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
-    function assignColoursToBands(ticketRatesApi, singleTicket) {
+    function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
       // assign gold, silver, bronze to packages depending on their current priceBand
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (singleTicket.section === sectionKey || singleTicket.section.indexOf( sectionKey ) > -1 ) {
+        if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
-            if (singleTicket.priceBand === bandKey) {
+            if (ticketRatesPriceBand === bandKey) {
               // match transformer config to existing priceBand
               // adds colour to the packageRate object for consumption in templates.
-              ticketRatesApi.colour = bandValue;
+              ticketRate.colour = bandValue;
             }
           });
         }
@@ -87,7 +87,7 @@ module.exports = function(dust) {
           // WEB-8081
           // make sure Transformer configuration has been pulled
           if (bandColours) {
-            assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids]);
+            assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids].section, ticketRates[packageRate.links.ticketRates.ids].priceBand);
           }
           reply[i].rates.push(packageRate);
         }
