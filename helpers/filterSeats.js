@@ -119,9 +119,9 @@ module.exports = function(dust) {
         'bronze': []
       };
       var newRates = [];
-      var allRates = [];
+
       // 1 - Push each rate to its own colour array (bandTypes)
-      _.forEach(rates, function(rate, rateIndex) {
+      _.forEach(rates, function(rate) {
         var quality = rate.links.ticketRates.colour;
         if (!quality) {
           return;
@@ -132,10 +132,10 @@ module.exports = function(dust) {
       // pick the cheapest rate and push it into the newRates array
       _.forEach(bandTypes, function(bandType, key) {
         bandType = _.orderBy(bandType, function(rate) {
-            return rate.grossPrice;
-          }, ['asc']);
+          return rate.grossPrice;
+        }, ['asc']);
 
-        if(bandType.length) {
+        if (bandType.length) {
           bandTypes[key] = bandType;
           newRates.push(bandType[0]);
         }
@@ -159,7 +159,7 @@ module.exports = function(dust) {
 
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
-    if( sortByInput == "price") {
+    if ( sortByInput === 'price') {
       reorderReplies();
     }
     loopAndBuildHelperOutput();
