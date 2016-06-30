@@ -22,6 +22,7 @@ module.exports = function(dust) {
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
     var bandColours = params.bandColours;
+    var sortByInput = params.sortBy;
 
     var cheapestRoom = {
       id: 0,
@@ -111,8 +112,56 @@ module.exports = function(dust) {
       });
     }
 
+    function reorderRates(rates, replyIndex) {
+      var bandTypes = {
+        'gold': [],
+        'silver': [],
+        'bronze': []
+      };
+      var newRates = [];
+      var allRates = [];
+      // 1 - Push each rate to its own colour array (bandTypes)
+      _.forEach(rates, function(rate, rateIndex) {
+        var quality = rate.links.ticketRates.colour;
+        if (!quality) {
+          return;
+        }
+        bandTypes[quality].push(rate);
+      });
+      // 2 - Order each bandTypes array by price and from each ordered array
+      // pick the cheapest rate and push it into the newRates array
+      _.forEach(bandTypes, function(bandType, key) {
+        bandType = _.orderBy(bandType, function(rate) {
+            return rate.grossPrice;
+          }, ['asc']);
+
+        if(bandType.length) {
+          bandTypes[key] = bandType;
+          newRates.push(bandType[0]);
+        }
+      });
+      // 3 - Order the cheapest rates selected in the step before by price
+      newRates = _.orderBy(newRates, function(newRate) {
+        return newRate.grossPrice;
+      }, ['asc']);
+
+      reply[replyIndex].rates = newRates;
+      reply[replyIndex].allRates = bandTypes.gold.concat(bandTypes.silver, bandTypes.bronze);
+    }
+    // For each reply we want to order the inner 'rates' array by price
+    // and then we want to reorder the replies themselves always by price
+    // taking in consideration just the cheapest rate of each
+    function reorderReplies() {
+      _.forEach(reply, function(section, i) {
+        reorderRates(section.rates, i);
+      });
+    }
+
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
+    if( sortByInput == "price") {
+      reorderReplies();
+    }
     loopAndBuildHelperOutput();
 
 
