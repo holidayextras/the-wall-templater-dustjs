@@ -104,19 +104,14 @@ module.exports = function(dust) {
       });
     }
 
-    function loopAndBuildHelperOutput() {
-      // Loop through finalised reply and add each theatre section to context for looping in template
-      _.forEach(reply, function(item) {
-        chunk = chunk.render(bodies.block, context.push(item));
-      });
-    }
-
     function reorderRates(rates, replyIndex) {
-      var bandTypes = {
-        'gold': [],
-        'silver': [],
-        'bronze': []
-      };
+      var bandTypes = {};
+      _.forEach(bandColours, function (sectionObj, sectionKey) {
+        _.forEach(sectionObj, function (quality, bandLetter) {
+          bandTypes[quality] = [];
+        });
+      });
+
       var newRates = [];
 
       // 1 - Push each rate to its own colour array (bandTypes)
@@ -228,6 +223,13 @@ module.exports = function(dust) {
       }
 
       reply = newReply;
+    }
+
+    function loopAndBuildHelperOutput() {
+      // Loop through finalised reply and add each theatre section to context for looping in template
+      _.forEach(reply, function(item) {
+        chunk = chunk.render(bodies.block, context.push(item));
+      });
     }
 
     findCheapestRoom();
