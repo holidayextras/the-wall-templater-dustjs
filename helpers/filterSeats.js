@@ -21,6 +21,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
+    var bandColours = params.bandColours;
 
     var cheapestRoom = {
       id: 0,
@@ -58,12 +59,36 @@ module.exports = function(dust) {
       });
     }
 
+    // use Transformer show config to add Gold, Silver or Bronze to packageRate
+    function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
+      // assign gold, silver, bronze to packages depending on their current priceBand
+      _.forEach(bandColours, function(sectionValue, sectionKey) {
+        // check for match between transformer and existing data
+        // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
+        if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
+          // match transformer config to existing seat section
+          _.forEach(sectionValue, function(bandValue, bandKey) {
+            if (ticketRatesPriceBand === bandKey) {
+              // match transformer config to existing priceBand
+              // adds colour to the packageRate object for consumption in templates.
+              ticketRate.colour = bandValue;
+            }
+          });
+        }
+      });
+    }
+
     function loopReplySections(packageRate) {
       // For every section in the stubbed out reply
       // check if the current package rate is in the current section
       _.forEach(reply, function(item, i) {
         // If so then we want to add this packageRate under the theatre section.
         if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
+          // WEB-8081
+          // make sure Transformer configuration has been pulled
+          if (bandColours) {
+            assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids].section, ticketRates[packageRate.links.ticketRates.ids].priceBand);
+          }
           reply[i].rates.push(packageRate);
         }
       });
