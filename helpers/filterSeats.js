@@ -145,7 +145,6 @@ module.exports = function(dust) {
       }, ['asc']);
 
       reply[replyIndex].rates = newRates;
-      reply[replyIndex].allRates = bandTypes.gold.concat(bandTypes.silver, bandTypes.bronze);
     }
     // For each reply we want to order the inner 'rates' array by price
     // and then we want to reorder the replies themselves always by price
@@ -156,10 +155,86 @@ module.exports = function(dust) {
       });
     }
 
+    function getMergedName(currSectionName, nextSectionName) {
+      var _name1 = currSectionName
+        .toUpperCase()
+        .replace(' ', '')
+        .replace('(LEFT)', '')
+        .replace('(RIGHT)', '');
+
+      var _name2 = nextSectionName
+        .toUpperCase()
+        .replace(' ', '')
+        .replace('(LEFT)', '')
+        .replace('(RIGHT)', '');
+
+      if (_name1 !== _name2) {
+        return false;
+      }
+
+      return currSectionName
+        .replace('(Left)', '')
+        .replace('(Right)', '')
+        .trim();
+    }
+
+    function getMergedSection(currSection, nextSection) {
+      var mergedReply = currSection;
+      var newName = getMergedName(currSection.name, nextSection.name);
+      if (!newName) {
+        return false;
+      }
+
+      var mixedRates = currSection.rates.concat(nextSection.rates);
+      var newRatesObj = {};
+
+      for (var i = 0; i < mixedRates.length; i++) {
+        var currRate = mixedRates[i];
+        var currColour = currRate.links.ticketRates.colour;
+
+        var condition = !newRatesObj[currColour]
+            || (currRate.grossPrice < newRatesObj[currColour].grossPrice)
+            || ((currRate.grossPrice === newRatesObj[currColour].grossPrice) && Math.random() >= 0.5);
+
+        if (condition) {
+          newRatesObj[currColour] = currRate;
+        }
+      }
+
+      mergedReply.name = newName;
+      mergedReply.rates = _.values(newRatesObj);
+
+      return mergedReply;
+    }
+
+    function mergeReplies() {
+      var newReply = {};
+      var loopMax = _.size(reply);
+
+      for (var i = 0, newReplyIndex = 0; i < loopMax; i++, newReplyIndex++) {
+        if (!reply[i + 1]) {
+          newReply[newReplyIndex] = reply[i];
+          break;
+        }
+
+        var mergedSection = getMergedSection(reply[i], reply[i + 1]);
+
+        if (mergedSection) {
+          newReply[newReplyIndex] = mergedSection;
+          i++;
+        } else {
+          newReply[newReplyIndex] = reply[i];
+        }
+      }
+
+      reply = newReply;
+    }
+
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
     if ( sortByInput === 'price') {
       reorderReplies();
+      mergeReplies();
     }
     loopAndBuildHelperOutput();
 
