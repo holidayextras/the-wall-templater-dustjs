@@ -106,7 +106,8 @@ module.exports = function(dust) {
       });
     }
 
-    // 
+    // For each section this function will assign each seat to its own colour,
+    // then will pick the cheapest rate from each colour and sort the colours by price.
     function reorderRates(rates, replyIndex) {
       // We parse the bandColours object containing the mapping between seats and colours
       // from Transfomer in order to pick all the colours been used for the current query and
