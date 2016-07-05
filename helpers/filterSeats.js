@@ -152,6 +152,11 @@ module.exports = function(dust) {
       });
     }
 
+    /**
+     * Check if the name of the current section and the name of the next section
+     * differ just for (Left) and (Right) and if they do then return the merged name.
+     * Otherwise return false.
+     */
     function getMergedName(currSectionName, nextSectionName) {
       var _name1 = currSectionName
         .toUpperCase()
@@ -175,6 +180,14 @@ module.exports = function(dust) {
         .trim();
     }
 
+    /**
+     * If the current section and the next one need to be merged,
+     * create and return a new merged section with a new array of rates otherwise return false.
+     * The new array of rates will contain the cheapest gold between left and right,
+     * the cheapest silver between left and right and so on.
+     * If the rate of the left section is equal to the one on the right then we will
+     * have 50% of probability to get the one on the left or the one on the right.
+     */
     function getMergedSection(currSection, nextSection) {
       var mergedReply = currSection;
       var newName = getMergedName(currSection.name, nextSection.name);
@@ -182,6 +195,7 @@ module.exports = function(dust) {
         return false;
       }
 
+      // Concatenate left rates with the right ones
       var mixedRates = currSection.rates.concat(nextSection.rates);
       var newRatesObj = {};
 
@@ -189,9 +203,15 @@ module.exports = function(dust) {
         var currRate = mixedRates[i];
         var currColour = currRate.links.ticketRates.colour;
 
+        // We only assign the currRate to its colour only:
+        // 1. If the currColour key has still an empty value
+        // 2. If the price of the current rate is cheaper than the previously assigned one
+        // 3. If the price of the current rate is equal to the previously assigned one. In
+        //    this case we have 50% of probability that the currRate will be assigned instead
+        //    of the previous one.
         var condition = !newRatesObj[currColour]
-            || (currRate.grossPrice < newRatesObj[currColour].grossPrice)
-            || ((currRate.grossPrice === newRatesObj[currColour].grossPrice) && Math.random() >= 0.5);
+          || (currRate.grossPrice < newRatesObj[currColour].grossPrice)
+          || ((currRate.grossPrice === newRatesObj[currColour].grossPrice) && Math.random() >= 0.5);
 
         if (condition) {
           newRatesObj[currColour] = currRate;
@@ -203,24 +223,34 @@ module.exports = function(dust) {
 
       return mergedReply;
     }
-
+    /**
+     * Loop through each section to see if the current section needs
+     * to be merged with the next one (i.e. Grand Circle (Left) and Grand Circle (Right))
+     * at the end we will have a new list of sections where left and right have been merged.
+     */
     function mergeReplies() {
       var newReply = {};
       var loopMax = _.size(reply);
 
       for (var i = 0, newReplyIndex = 0; i < loopMax; i++, newReplyIndex++) {
-        if (!reply[i + 1]) {
-          newReply[newReplyIndex] = reply[i];
+        var currSection = reply[i];
+        var nextSection = reply[i + 1];
+
+        // if there is no nextSection we can stop looping
+        if (!nextSection) {
+          newReply[newReplyIndex] = currSection;
           break;
         }
 
-        var mergedSection = getMergedSection(reply[i], reply[i + 1]);
-
+        var mergedSection = getMergedSection(currSection, nextSection);
+        // If we received a merged section from the 'getMergedSection' function
+        // we can push the merged section into the newReply object and increase the index
+        // by one so that the next loop will skip the check for the nextSection.
         if (mergedSection) {
           newReply[newReplyIndex] = mergedSection;
           i++;
         } else {
-          newReply[newReplyIndex] = reply[i];
+          newReply[newReplyIndex] = currSection;
         }
       }
 
