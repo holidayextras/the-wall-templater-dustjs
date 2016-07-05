@@ -106,7 +106,11 @@ module.exports = function(dust) {
       });
     }
 
+    // 
     function reorderRates(rates, replyIndex) {
+      // We parse the bandColours object containing the mapping between seats and colours
+      // from Transfomer in order to pick all the colours been used for the current query and
+      // so we create a new object bandTypes having the coulours as keys and empty arrays as values
       var bandTypes = {};
       _.forEach(bandColours, function (sectionObj) {
         _.forEach(sectionObj, function (quality) {
