@@ -84,11 +84,12 @@ module.exports = function(dust) {
       // check if the current package rate is in the current section
       _.forEach(reply, function(item, i) {
         // If so then we want to add this packageRate under the theatre section.
-        if (ticketRates[packageRate.links.ticketRates.ids].section === item.name) {
+        var ticketRate = ticketRates[packageRate.links.ticketRates.ids];
+        if (ticketRate.section === item.name) {
           // WEB-8081
           // make sure Transformer configuration has been pulled
           if (bandColours) {
-            assignColoursToBands(packageRate.links.ticketRates, ticketRates[packageRate.links.ticketRates.ids].section, ticketRates[packageRate.links.ticketRates.ids].priceBand);
+            assignColoursToBands(packageRate.links.ticketRates, ticketRate.section, ticketRate.priceBand);
           }
           reply[i].rates.push(packageRate);
         }
@@ -105,19 +106,19 @@ module.exports = function(dust) {
       });
     }
 
-    function loopAndBuildHelperOutput() {
-      // Loop through finalised reply and add each theatre section to context for looping in template
-      _.forEach(reply, function(item) {
-        chunk = chunk.render(bodies.block, context.push(item));
-      });
-    }
-
+    // For each section this function will assign each seat to its own colour,
+    // then will pick the cheapest rate from each colour and sort the colours by price.
     function reorderRates(rates, replyIndex) {
-      var bandTypes = {
-        'gold': [],
-        'silver': [],
-        'bronze': []
-      };
+      // We parse the bandColours object containing the mapping between seats and colours
+      // from Transfomer in order to pick all the colours been used for the current query and
+      // so we create a new object bandTypes having the coulours as keys and empty arrays as values
+      var bandTypes = {};
+      _.forEach(bandColours, function (sectionObj) {
+        _.forEach(sectionObj, function (quality) {
+          bandTypes[quality] = [];
+        });
+      });
+
       var newRates = [];
 
       // 1 - Push each rate to its own colour array (bandTypes)
@@ -146,7 +147,6 @@ module.exports = function(dust) {
       }, ['asc']);
 
       reply[replyIndex].rates = newRates;
-      reply[replyIndex].allRates = bandTypes.gold.concat(bandTypes.silver, bandTypes.bronze);
     }
     // For each reply we want to order the inner 'rates' array by price
     // and then we want to reorder the replies themselves always by price
@@ -157,10 +157,118 @@ module.exports = function(dust) {
       });
     }
 
+    // Check if the name of the current section and the name of the next section
+    // differ just for (Left) and (Right) and if they do then return the merged name.
+    // Otherwise return false.
+    function getMergedName(currSectionName, nextSectionName) {
+      var _name1 = currSectionName
+        .toUpperCase()
+        .replace(' ', '')
+        .replace('(LEFT)', '')
+        .replace('(RIGHT)', '');
+
+      var _name2 = nextSectionName
+        .toUpperCase()
+        .replace(' ', '')
+        .replace('(LEFT)', '')
+        .replace('(RIGHT)', '');
+
+      if (_name1 !== _name2) {
+        return false;
+      }
+
+      return currSectionName
+        .replace('(Left)', '')
+        .replace('(Right)', '')
+        .trim();
+    }
+
+    // If the current section and the next one need to be merged,
+    // create and return a new merged section with a new array of rates otherwise return false.
+    // The new array of rates will contain the cheapest gold between left and right,
+    // the cheapest silver between left and right and so on.
+    // If the rate of the left section is equal to the one on the right then we will
+    // have 50% of probability to get the one on the left or the one on the right.
+    function getMergedSection(currSection, nextSection) {
+      var mergedReply = currSection;
+      var newName = getMergedName(currSection.name, nextSection.name);
+      if (!newName) {
+        return false;
+      }
+
+      // Concatenate left rates with the right ones
+      var mixedRates = currSection.rates.concat(nextSection.rates);
+      var newRatesObj = {};
+
+      for (var i = 0; i < mixedRates.length; i++) {
+        var currRate = mixedRates[i];
+        var currColour = currRate.links.ticketRates.colour;
+
+        // We only assign the currRate to its colour only:
+        // 1. If the currColour key has still an empty value
+        // 2. If the price of the current rate is cheaper than the previously assigned one
+        // 3. If the price of the current rate is equal to the previously assigned one. In
+        //    this case we have 50% of probability that the currRate will be assigned instead
+        //    of the previous one.
+        var condition = !newRatesObj[currColour]
+          || (currRate.grossPrice < newRatesObj[currColour].grossPrice)
+          || ((currRate.grossPrice === newRatesObj[currColour].grossPrice) && Math.random() >= 0.5);
+
+        if (condition) {
+          newRatesObj[currColour] = currRate;
+        }
+      }
+
+      mergedReply.name = newName;
+      mergedReply.rates = _.values(newRatesObj);
+
+      return mergedReply;
+    }
+
+    // Loop through each section to see if the current section needs
+    // to be merged with the next one (i.e. Grand Circle (Left) and Grand Circle (Right))
+    // at the end we will have a new list of sections where left and right have been merged.
+    function mergeReplies() {
+      var newReply = {};
+      var loopMax = _.size(reply);
+
+      for (var i = 0, newReplyIndex = 0; i < loopMax; i++, newReplyIndex++) {
+        var currSection = reply[i];
+        var nextSection = reply[i + 1];
+
+        // if there is no nextSection we can stop looping
+        if (!nextSection) {
+          newReply[newReplyIndex] = currSection;
+          break;
+        }
+
+        var mergedSection = getMergedSection(currSection, nextSection);
+        // If we received a merged section from the 'getMergedSection' function
+        // we can push the merged section into the newReply object and increase the index
+        // by one so that the next loop will skip the check for the nextSection.
+        if (mergedSection) {
+          newReply[newReplyIndex] = mergedSection;
+          i++;
+        } else {
+          newReply[newReplyIndex] = currSection;
+        }
+      }
+
+      reply = newReply;
+    }
+
+    function loopAndBuildHelperOutput() {
+      // Loop through finalised reply and add each theatre section to context for looping in template
+      _.forEach(reply, function(item) {
+        chunk = chunk.render(bodies.block, context.push(item));
+      });
+    }
+
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
     if ( sortByInput === 'price') {
       reorderReplies();
+      mergeReplies();
     }
     loopAndBuildHelperOutput();
 
