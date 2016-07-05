@@ -152,11 +152,9 @@ module.exports = function(dust) {
       });
     }
 
-    /**
-     * Check if the name of the current section and the name of the next section
-     * differ just for (Left) and (Right) and if they do then return the merged name.
-     * Otherwise return false.
-     */
+    // Check if the name of the current section and the name of the next section
+    // differ just for (Left) and (Right) and if they do then return the merged name.
+    // Otherwise return false.
     function getMergedName(currSectionName, nextSectionName) {
       var _name1 = currSectionName
         .toUpperCase()
@@ -180,14 +178,12 @@ module.exports = function(dust) {
         .trim();
     }
 
-    /**
-     * If the current section and the next one need to be merged,
-     * create and return a new merged section with a new array of rates otherwise return false.
-     * The new array of rates will contain the cheapest gold between left and right,
-     * the cheapest silver between left and right and so on.
-     * If the rate of the left section is equal to the one on the right then we will
-     * have 50% of probability to get the one on the left or the one on the right.
-     */
+    // If the current section and the next one need to be merged,
+    // create and return a new merged section with a new array of rates otherwise return false.
+    // The new array of rates will contain the cheapest gold between left and right,
+    // the cheapest silver between left and right and so on.
+    // If the rate of the left section is equal to the one on the right then we will
+    // have 50% of probability to get the one on the left or the one on the right.
     function getMergedSection(currSection, nextSection) {
       var mergedReply = currSection;
       var newName = getMergedName(currSection.name, nextSection.name);
@@ -223,11 +219,10 @@ module.exports = function(dust) {
 
       return mergedReply;
     }
-    /**
-     * Loop through each section to see if the current section needs
-     * to be merged with the next one (i.e. Grand Circle (Left) and Grand Circle (Right))
-     * at the end we will have a new list of sections where left and right have been merged.
-     */
+
+    // Loop through each section to see if the current section needs
+    // to be merged with the next one (i.e. Grand Circle (Left) and Grand Circle (Right))
+    // at the end we will have a new list of sections where left and right have been merged.
     function mergeReplies() {
       var newReply = {};
       var loopMax = _.size(reply);
