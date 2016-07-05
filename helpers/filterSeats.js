@@ -106,8 +106,8 @@ module.exports = function(dust) {
 
     function reorderRates(rates, replyIndex) {
       var bandTypes = {};
-      _.forEach(bandColours, function (sectionObj, sectionKey) {
-        _.forEach(sectionObj, function (quality, bandLetter) {
+      _.forEach(bandColours, function (sectionObj) {
+        _.forEach(sectionObj, function (quality) {
           bandTypes[quality] = [];
         });
       });
