@@ -24,9 +24,7 @@ module.exports = function(dust) {
     var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
 
-    var bestColours = {};
     var bestSections = {};
-    var bestPrice = {};
     var currentPrice;
     var topTicket;
 
@@ -87,16 +85,17 @@ module.exports = function(dust) {
       var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
       // check if current ticketRate exists in
       if (bestSections.indexOf(ticketRateSection) > -1 && bestColours.indexOf(ticketRateColour) > -1) {
+        var bestPrice = {};
         // check if price is cheaper or exists
         if (ticketRatePrice < currentPrice || !currentPrice) {
           // assign ticket to object
-          bestPrice = {
+          var bestPrice = {
             id: ticketRateId,
             price: ticketRatePrice,
             colour: ticketRateColour
           };
         } else {
-          bestPrice = {};
+          var bestPrice = {};
         }
       }
       // get the total amount of tickets set to object
@@ -122,10 +121,10 @@ module.exports = function(dust) {
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
               // match transformer config to existing priceBand
-              packageRate.colour = bandValue;
+              ticketRate.colour = bandValue;
               // use information to try and find the best deal
               topTicket = chosenForYou(ticketRate, ticketRatesSection);
-              if(topTicket && ticketRate.ids === topTicket) {
+              if (topTicket && ticketRate.ids === topTicket) {
                 ticketRate.cheapest = true;
               }
             }
