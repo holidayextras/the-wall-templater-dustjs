@@ -24,6 +24,7 @@ module.exports = function(dust) {
     var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
 
+    var bestColours = {};
     var bestSections = {};
     var bestPrice = {};
     var currentPrice;
@@ -69,7 +70,7 @@ module.exports = function(dust) {
     function getBestSections() {
       var countSections = Object.keys(bandColours).length;
       // add all section names to an array
-      _.forEach (bandColours, function(bands, section) {
+      _.forEach(bandColours, function(bands, section) {
         bestSections.push(section);
       });
       // find the best section
@@ -103,11 +104,11 @@ module.exports = function(dust) {
       // check if any tickets are set
       if (totalTickets > 0) {
         // sort best tickets by price then by colour
-        var topTickets = _.sortBy(bestPrice, ['price', 'colour']);
+        var bestPrice = _.sortBy(bestPrice, ['price', 'colour']);
         // check for first instance
         topTicket = _.first(_.values(bestPrice), 1);
-        return topTicket;
       }
+      return topTicket;
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
@@ -116,10 +117,10 @@ module.exports = function(dust) {
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (ticketRates[packageRate.ids].section === sectionKey || ticketRates[packageRate.ids].section.indexOf( sectionKey ) > -1 ) {
+        if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
-            if (ticketRates[packageRate.ids].priceBand === bandKey) {
+            if (ticketRatesPriceBand === bandKey) {
               // match transformer config to existing priceBand
               packageRate.colour = bandValue;
               // use information to try and find the best deal
