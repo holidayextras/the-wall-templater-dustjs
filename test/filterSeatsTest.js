@@ -45,19 +45,19 @@ describe('Filter seats - Dust helpers', function() {
     done();
   });
 
-  it('should return GSB seats ordered by price', function() {
+  it('should return seats grouped by quality and ordered by price', function() {
     var params = loadTestResource('fixtures/filterSeatsParams');
     var expected = loadTestResource('expected/filterSeatsOutput');
 
     var output = dustMock.helpers._filterSeats(chunkMock, context, bodies, params);
 
-    _.forEach(output.data, function(reply, i) {
-      expect(reply.name).to.be.equal(expected[i].name);
+    _.forEach(output.data, function(reply, replyIndex) {
+      expect(reply.name).to.be.equal(expected[replyIndex].name);
       var rates = reply.rates;
-      var expectedRates = expected[i].rates;
-      _.forEach(rates, function(rate, i) {
-        expect(rate.grossPrice).to.be.equal(expectedRates[i].grossPrice);
-        expect(rate.links.ticketRates.colour).to.be.equal(expectedRates[i].links.ticketRates.colour);
+      var expectedRates = expected[replyIndex].rates;
+      _.forEach(rates, function(rate, rateIndex) {
+        expect(rate.grossPrice).to.be.equal(expectedRates[rateIndex].grossPrice);
+        expect(rate.links.ticketRates.colour).to.be.equal(expectedRates[rateIndex].links.ticketRates.colour);
       });
     });
   });
