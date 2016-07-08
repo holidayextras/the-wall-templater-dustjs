@@ -23,10 +23,10 @@ module.exports = function(dust) {
     var roomRates = params.roomRates;
     var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
+    var seatLegend = params.seatLegend.seatLegend.en;
 
-    var bestColours = {};
     var bestPrice = {};
-    var bestSections = {};
+    var bestSections = [];
     var currentPrice;
     var topTicket;
 
@@ -68,47 +68,51 @@ module.exports = function(dust) {
 
     // get the names of the best two sections from the theatre
     function getBestSections() {
-      var countSections = Object.keys(bandColours).length;
       // add all section names to an array
       _.forEach(bandColours, function(bands, section) {
         bestSections.push(section);
       });
       // find the best section
-      bestSections = bestSections.slice(Math.max(countSections - 1, 0)); // just Stalls
+      bestSections = _.last(bestSections); // just Stalls
     }
 
     getBestSections();
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
-      // ticketRateSection
-      var ticketRateId = ticketRate.ids;
-      var ticketRateColour = ticketRate.colour;
-      var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
-      // check if current ticketRate exists in
-      if (bestSections.indexOf(ticketRateSection) > -1 && bestColours.indexOf(ticketRateColour) > -1) {
-        // check if price is cheaper or exists
-        if (ticketRatePrice < currentPrice || !currentPrice) {
-          // assign ticket to object
-          bestPrice = {
-            id: ticketRateId,
-            price: ticketRatePrice,
-            colour: ticketRateColour
-          };
-        } else {
-          bestPrice = {};
+      try {
+        // ticketRateSection
+        var ticketRateId = ticketRate.ids;
+        var ticketRateColour = ticketRate.colour;
+        var ticketRateColourRank = ticketRate.colourRank;
+        var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
+        // check if current ticketRate exists in
+        if (bestSections === ticketRateSection && seatLegend.indexOf(ticketRateColourRank) > -1) {
+          // check if price is cheaper or exists
+          if (ticketRatePrice < currentPrice || !currentPrice) {
+            // assign ticket to object
+            bestPrice = {
+              id: ticketRateId,
+              price: ticketRatePrice,
+              colour: ticketRateColour,
+              colourRank: ticketRateColourRank
+            };
+          }
         }
+        // get the total amount of tickets set to object
+        var totalTickets = Object.keys(bestPrice).length;
+        // check if any tickets are set
+        if (totalTickets > 0) {
+          // sort best tickets by price then by colour
+          bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
+          console.log( bestPrice );
+          // check for first instance
+          topTicket = _.first(_.values(bestPrice), 1);
+        }
+        return topTicket;
+      } catch (e) {
+        console.log( 'error', e );
       }
-      // get the total amount of tickets set to object
-      var totalTickets = Object.keys(bestPrice).length;
-      // check if any tickets are set
-      if (totalTickets > 0) {
-        // sort best tickets by price then by colour
-        bestPrice = _.sortBy(bestPrice, ['price', 'colour']);
-        // check for first instance
-        topTicket = _.first(_.values(bestPrice), 1);
-      }
-      return topTicket;
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
@@ -116,18 +120,19 @@ module.exports = function(dust) {
       // assign gold, silver, bronze to packages depending on their current priceBand
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
-        // check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
+        // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
         if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
               // match transformer config to existing priceBand
               // adds colour to the packageRate object for consumption in templates.
-              ticketRate.colour = bandValue;
+              ticketRate.colour = seatLegend[bandValue];
+              ticketRate.colourRank = bandValue;
               // use information to try and find the best deal
               topTicket = chosenForYou(ticketRate, ticketRatesSection);
               if (topTicket && ticketRate.ids === topTicket) {
-                ticketRate.cheapest = true;
+                ticketRate.bestOffer = true;
               }
             }
           });
