@@ -80,39 +80,34 @@ module.exports = function(dust) {
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
-      try {
-        // ticketRateSection
-        var ticketRateId = ticketRate.ids;
-        var ticketRateColour = ticketRate.colour;
-        var ticketRateColourRank = ticketRate.colourRank;
-        var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
-        // check if current ticketRate exists in
-        if (bestSections === ticketRateSection && seatLegend.indexOf(ticketRateColourRank) > -1) {
-          // check if price is cheaper or exists
-          if (ticketRatePrice < currentPrice || !currentPrice) {
-            // assign ticket to object
-            bestPrice = {
-              id: ticketRateId,
-              price: ticketRatePrice,
-              colour: ticketRateColour,
-              colourRank: ticketRateColourRank
-            };
-          }
+      // ticketRateSection
+      var ticketRateId = ticketRate.ids;
+      var ticketRateColour = ticketRate.colour;
+      var ticketRateColourRank = ticketRate.colourRank;
+      var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
+      // check if current ticketRate exists in
+      if (bestSections === ticketRateSection && _.last(ticketRateColourRank)) {
+        // check if price is cheaper or exists
+        if (ticketRatePrice < currentPrice || !currentPrice) {
+          // assign ticket to object
+          bestPrice = {
+            id: ticketRateId,
+            price: ticketRatePrice,
+            colour: ticketRateColour,
+            colourRank: ticketRateColourRank
+          };
         }
-        // get the total amount of tickets set to object
-        var totalTickets = Object.keys(bestPrice).length;
-        // check if any tickets are set
-        if (totalTickets > 0) {
-          // sort best tickets by price then by colour
-          bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
-          console.log( bestPrice );
-          // check for first instance
-          topTicket = _.first(_.values(bestPrice), 1);
-        }
-        return topTicket;
-      } catch (e) {
-        console.log( 'error', e );
       }
+      // get the total amount of tickets set to object
+      var totalTickets = Object.keys(bestPrice).length;
+      // check if any tickets are set
+      if (totalTickets > 0) {
+        // sort best tickets by price then by colour
+        bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
+        // check for first instance
+        topTicket = _.first(_.values(bestPrice), 1);
+      }
+      return topTicket;
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
@@ -121,7 +116,7 @@ module.exports = function(dust) {
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
+        if (ticketRatesSection === sectionKey || ticketRatesSection === sectionKey ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
