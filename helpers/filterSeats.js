@@ -96,6 +96,7 @@ module.exports = function(dust) {
             colour: ticketRateColour,
             colourRank: ticketRateColourRank
           };
+          currentPrice = ticketRatePrice;
         }
       }
       // get the total amount of tickets set to object
@@ -104,8 +105,11 @@ module.exports = function(dust) {
       if (totalTickets > 0) {
         // sort best tickets by price then by colour
         bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
-        // check for first instance
-        topTicket = _.first(_.values(bestPrice), 1);
+        // find out if the top ticket is gold
+        if (bestPrice[3] === 2) {
+          // check for first instance
+          topTicket = _.first(_.values(bestPrice), 1);
+        }
       }
       return topTicket;
     }
@@ -131,6 +135,7 @@ module.exports = function(dust) {
               }
             }
           });
+          console.log( ticketRate );
         }
       });
     }
