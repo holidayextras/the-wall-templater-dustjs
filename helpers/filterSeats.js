@@ -11,7 +11,10 @@ module.exports = function(dust) {
   * @param {object} venueProducts venue products
   * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
-  * @example {@_filterSeats packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates} {/_filterSeats} output loop of sections with seats inside sorted by price
+  * @param {object} bandColours gets seat information from cloudant
+  * @param {string} sortByInput price sorting
+  * @param {object} seatLegend gets current colours from cloudant
+  * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id]} {/_filterSeats} output loop of sections with seats inside sorted by price
   */
 
   dust.helpers._filterSeats = function(chunk, context, bodies, params) {
@@ -135,7 +138,6 @@ module.exports = function(dust) {
               }
             }
           });
-          console.log( ticketRate );
         }
       });
     }
@@ -332,7 +334,6 @@ module.exports = function(dust) {
       mergeReplies();
     }
     loopAndBuildHelperOutput();
-
 
     return chunk;
 
