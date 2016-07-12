@@ -24,7 +24,6 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    // var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
     var seatLegend = params.seatLegend;
 
