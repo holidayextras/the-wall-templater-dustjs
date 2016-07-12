@@ -97,17 +97,7 @@ module.exports = function(dust) {
           currentPrice = ticketRatePrice;
         }
       }
-      // check if any tickets are set
-      if (Object.keys(bestPrice).length > 0) {
-        // sort best tickets by price then by colour
-        bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
-        // find out if the top ticket is gold
-        if (bestPrice[3] === 2) {
-          // check for first instance
-          topTicket = _.first(_.values(bestPrice), 1);
-        }
-      }
-      return topTicket;
+      return bestPrice;
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
@@ -129,6 +119,7 @@ module.exports = function(dust) {
               if (topTicket && ticketRate.ids === topTicket) {
                 ticketRate.bestOffer = true;
               }
+              console.log( ticketRate );
             }
           });
         }
@@ -327,8 +318,6 @@ module.exports = function(dust) {
       mergeReplies();
     }
     loopAndBuildHelperOutput();
-
-    console.log( '%j', reply );
 
     return chunk;
 
