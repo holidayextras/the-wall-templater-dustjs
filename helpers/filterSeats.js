@@ -14,7 +14,7 @@ module.exports = function(dust) {
   * @param {object} bandColours gets seat information from cloudant
   * @param {string} sortByInput price sorting
   * @param {object} seatLegend gets current colours from cloudant
-  * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id]} {/_filterSeats} output loop of sections with seats inside sorted by price
+  * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id] seatLegend=_brandConfig["seatLegend"]["en"]} {/_filterSeats} output loop of sections with seats inside sorted by price
   */
 
   dust.helpers._filterSeats = function(chunk, context, bodies, params) {
@@ -26,12 +26,10 @@ module.exports = function(dust) {
     var roomRates = params.roomRates;
     var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
-    var seatLegend = params.seatLegend.seatLegend.en;
+    var seatLegend = params.seatLegend;
 
     var bestPrice = {};
-    var bestSections = [];
-    var currentPrice;
-    var topTicket;
+    var currentPrice, topTicket;
 
     var cheapestRoom = {
       id: 0,
@@ -70,60 +68,64 @@ module.exports = function(dust) {
     }
 
     // get the names of the best two sections from the theatre
-    function getBestSections() {
-      // add all section names to an array
-      _.forEach(bandColours, function(bands, section) {
-        bestSections.push(section);
-      });
-      // find the best section
-      bestSections = _.last(bestSections); // just Stalls
+    function getBestSections( bandColours ) {
+      try {
+        var bestSections = [];
+        // add all section names to an array
+        _.forEach(bandColours, function(bands, section) {
+          bestSections.push(section);
+        });
+        // find the best section
+        bestSections = _.last(bestSections); // just Stalls
+        return bestSections;
+      } catch (e) {
+        console.log( 'getBestSections error', e );
+      }
     }
-
-    getBestSections();
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
-      // ticketRateSection
-      var ticketRateId = ticketRate.ids;
-      var ticketRateColour = ticketRate.colour;
-      var ticketRateColourRank = ticketRate.colourRank;
-      var ticketRatePrice = ticketRates[ticketRateId].grossPrice;
-      // check if current ticketRate exists in
-      if (bestSections === ticketRateSection && _.last(ticketRateColourRank)) {
-        // check if price is cheaper or exists
-        if (ticketRatePrice < currentPrice || !currentPrice) {
-          // assign ticket to object
-          bestPrice = {
-            id: ticketRateId,
-            price: ticketRatePrice,
-            colour: ticketRateColour,
-            colourRank: ticketRateColourRank
-          };
-          currentPrice = ticketRatePrice;
+      try {
+        var bestSections = getBestSections(bandColours);
+        var ticketRatePrice = ticketRates[ticketRate.ids].grossPrice;
+        // check if current ticketRate exists in
+        if (bestSections === ticketRateSection && _.last(ticketRate.colourRank)) {
+          // check if price is cheaper or exists
+          if (!currentPrice || ticketRatePrice < currentPrice) {
+            // assign ticket to object
+            bestPrice = {
+              id: ticketRate.ids,
+              price: ticketRatePrice,
+              colour: ticketRate.colour,
+              colourRank: ticketRate.colourRank
+            };
+            currentPrice = ticketRatePrice;
+          }
         }
-      }
-      // get the total amount of tickets set to object
-      var totalTickets = Object.keys(bestPrice).length;
-      // check if any tickets are set
-      if (totalTickets > 0) {
-        // sort best tickets by price then by colour
-        bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
-        // find out if the top ticket is gold
-        if (bestPrice[3] === 2) {
-          // check for first instance
-          topTicket = _.first(_.values(bestPrice), 1);
+        // check if any tickets are set
+        if (Object.keys(bestPrice).length > 0) {
+          // sort best tickets by price then by colour
+          bestPrice = _.sortBy(bestPrice, ['price', 'colourRank']);
+          // find out if the top ticket is gold
+          if (bestPrice[3] === 2) {
+            // check for first instance
+            topTicket = _.first(_.values(bestPrice), 1);
+          }
         }
+        return topTicket;
+      } catch (e) {
+        console.log( 'chosenForYou error', e );
       }
-      return topTicket;
     }
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
+      try {
       // assign gold, silver, bronze to packages depending on their current priceBand
       _.forEach(bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (ticketRatesSection === sectionKey || ticketRatesSection === sectionKey ) {
+        if (ticketRatesSection === sectionKey ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
@@ -140,6 +142,9 @@ module.exports = function(dust) {
           });
         }
       });
+    } catch (e) {
+      console.log( 'assignColoursToBands error', e );
+    }
     }
 
     function loopReplySections(packageRate) {
