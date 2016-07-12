@@ -24,7 +24,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    var bandColours = params.bandColours;
+    // var bandColours = params.bandColours;
     var sortByInput = params.sortBy;
     var seatLegend = params.seatLegend;
 
@@ -68,10 +68,10 @@ module.exports = function(dust) {
     }
 
     // get the names of the best two sections from the theatre
-    function getBestSections(bandColoursParams) {
+    function getBestSections(bandColours) {
       var bestSections = [];
       // add all section names to an array
-      _.forEach(bandColoursParams, function(bands, section) {
+      _.forEach(bandColours, function(bands, section) {
         bestSections.push(section);
       });
       // find the best section
@@ -81,7 +81,7 @@ module.exports = function(dust) {
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
-      var bestSections = getBestSections(bandColours);
+      var bestSections = getBestSections(params.bandColours);
       var ticketRatePrice = ticketRates[ticketRate.ids].grossPrice;
       // check if current ticketRate exists in
       if (bestSections === ticketRateSection && _.last(ticketRate.colourRank)) {
@@ -103,7 +103,7 @@ module.exports = function(dust) {
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
       // assign gold, silver, bronze to packages depending on their current priceBand
-      _.forEach(bandColours, function(sectionValue, sectionKey) {
+      _.forEach(params.bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
         if (ticketRatesSection === sectionKey ) {
@@ -134,7 +134,7 @@ module.exports = function(dust) {
         if (ticketRate.section === item.name) {
           // WEB-8081
           // make sure Transformer configuration has been pulled
-          if (bandColours) {
+          if (params.bandColours) {
             assignColoursToBands(packageRate.links.ticketRates, ticketRate.section, ticketRate.priceBand);
           }
           reply[i].rates.push(packageRate);
@@ -159,7 +159,7 @@ module.exports = function(dust) {
       // from Transfomer in order to pick all the colours been used for the current query and
       // so we create a new object bandTypes having the coulours as keys and empty arrays as values
       var bandTypes = {};
-      _.forEach(bandColours, function (sectionObj) {
+      _.forEach(params.bandColours, function (sectionObj) {
         _.forEach(sectionObj, function (quality) {
           bandTypes[quality] = [];
         });
