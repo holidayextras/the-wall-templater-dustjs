@@ -68,7 +68,7 @@ module.exports = function(dust) {
     }
 
     // get the names of the best two sections from the theatre
-    function getBestSections( bandColours ) {
+    function getBestSections() {
       var bestSections = [];
       // add all section names to an array
       _.forEach(bandColours, function(bands, section) {
@@ -327,6 +327,8 @@ module.exports = function(dust) {
       mergeReplies();
     }
     loopAndBuildHelperOutput();
+
+    console.log( '%j', reply );
 
     return chunk;
 
