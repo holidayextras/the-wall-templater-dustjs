@@ -68,10 +68,10 @@ module.exports = function(dust) {
     }
 
     // get the names of the best two sections from the theatre
-    function getBestSections() {
+    function getBestSections(bandColoursParams) {
       var bestSections = [];
       // add all section names to an array
-      _.forEach(bandColours, function(bands, section) {
+      _.forEach(bandColoursParams, function(bands, section) {
         bestSections.push(section);
       });
       // find the best section
