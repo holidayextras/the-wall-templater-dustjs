@@ -119,7 +119,6 @@ module.exports = function(dust) {
               if (topTicket && ticketRate.ids === topTicket) {
                 ticketRate.bestOffer = true;
               }
-              console.log( ticketRate );
             }
           });
         }
