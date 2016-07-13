@@ -74,15 +74,14 @@ module.exports = function(dust) {
         bestSections.push(section);
       });
       // find the best section
-      bestSections = _.last(bestSections); // just Stalls
-      return bestSections;
+      return _.last(bestSections); // just Stalls
     }
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
       var bestSections = getBestSections(params.bandColours);
       var ticketRatePrice = ticketRates[ticketRate.ids].grossPrice;
-      // check if current ticketRate exists in
+      // check if current ticketRate exists
       if (bestSections === ticketRateSection && _.last(ticketRate.colourRank)) {
         // check if price is cheaper or exists
         if (!currentPrice || ticketRatePrice < currentPrice) {
