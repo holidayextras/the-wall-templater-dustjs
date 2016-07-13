@@ -318,6 +318,5 @@ module.exports = function(dust) {
     }
     loopAndBuildHelperOutput();
     return chunk;
-
   };
 };
