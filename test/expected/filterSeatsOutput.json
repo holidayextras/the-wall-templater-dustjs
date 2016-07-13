@@ -3,23 +3,24 @@
     "name":"Grand Circle",
     "rates":[
       {
-        "id":"f069b65548b09bdea94a50925bc87653a6e9dbf1",
-        "grossPrice":160,
+        "id":"e81bf8a122360d322b97cadf9f4478e186716dc3",
+        "grossPrice":241.42,
         "links":{
           "roomRates":{
             "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
+              "64eb376db7c89d265c14e87fd7a1f5e9"
             ],
             "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
           },
           "ticketRates":{
             "ids":[
-              "d931d8b0e5fd497a3d7ece298452cccd"
+              "2be87883ac20ed8891bbd21ace87f1f9"
             ],
             "type":"ticketRates",
-            "href":"/ticketRates/d931d8b0e5fd497a3d7ece298452cccd",
-            "colour":"bronze"
+            "href":"/ticketRates/2be87883ac20ed8891bbd21ace87f1f9",
+            "colour":"silver",
+            "colourRank":"3"
           },
           "hotelProducts":{
             "ids":[
@@ -35,42 +36,7 @@
             "type":"roomProducts"
           }
         },
-        "href":"/packageRates/f069b65548b09bdea94a50925bc87653a6e9dbf1"
-      },
-      {
-        "id":"efa34ec8a88a422de2ab2b08b7724a6a980e1181",
-        "grossPrice":231.42,
-        "links":{
-          "roomRates":{
-            "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
-            ],
-            "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
-          },
-          "ticketRates":{
-            "ids":[
-              "5674bbc6124c748e3a072e6619bf5d1e"
-            ],
-            "type":"ticketRates",
-            "href":"/ticketRates/5674bbc6124c748e3a072e6619bf5d1e",
-            "colour":"silver"
-          },
-          "hotelProducts":{
-            "ids":[
-              "ATGHSC"
-            ],
-            "type":"hotelProducts",
-            "href":"/hotelProducts/ATGHSC"
-          },
-          "roomProducts":{
-            "ids":[
-
-            ],
-            "type":"roomProducts"
-          }
-        },
-        "href":"/packageRates/efa34ec8a88a422de2ab2b08b7724a6a980e1181"
+        "href":"/packageRates/e81bf8a122360d322b97cadf9f4478e186716dc3"
       }
     ]
   },
@@ -78,23 +44,24 @@
     "name":"Royal Circle",
     "rates":[
       {
-        "id":"b720173f29d64ba9a6d8f75cbd61b53cbc300a52",
-        "grossPrice":268.58,
+        "id":"acf6d92e7b8bf51d0c76c2fe2f0281bf7933c605",
+        "grossPrice":307.14,
         "links":{
           "roomRates":{
             "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
+              "64eb376db7c89d265c14e87fd7a1f5e9"
             ],
             "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
           },
           "ticketRates":{
             "ids":[
-              "3a0d3a08fb2db47c9c19cbd22ec63546"
+              "38a3f28af3e5e0dcf88a4c8ef57898a5"
             ],
             "type":"ticketRates",
-            "href":"/ticketRates/3a0d3a08fb2db47c9c19cbd22ec63546",
-            "colour":"silver"
+            "href":"/ticketRates/38a3f28af3e5e0dcf88a4c8ef57898a5",
+            "colour":"gold",
+            "colourRank":"2"
           },
           "hotelProducts":{
             "ids":[
@@ -110,26 +77,27 @@
             "type":"roomProducts"
           }
         },
-        "href":"/packageRates/b720173f29d64ba9a6d8f75cbd61b53cbc300a52"
+        "href":"/packageRates/acf6d92e7b8bf51d0c76c2fe2f0281bf7933c605"
       },
       {
-        "id":"d75c174a1192f22b876984c8b1befec23acc7812",
-        "grossPrice":297.14,
+        "id":"d1626206778df345a11e95b240157c188e0a8548",
+        "grossPrice":377.14,
         "links":{
           "roomRates":{
             "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
+              "64eb376db7c89d265c14e87fd7a1f5e9"
             ],
             "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
           },
           "ticketRates":{
             "ids":[
-              "7c9d7047e5d7f2000811aadfc2684f14"
+              "8769709143bad63ff0ec9706b986a47a"
             ],
             "type":"ticketRates",
-            "href":"/ticketRates/7c9d7047e5d7f2000811aadfc2684f14",
-            "colour":"gold"
+            "href":"/ticketRates/8769709143bad63ff0ec9706b986a47a",
+            "colour":"platinum",
+            "colourRank":"1"
           },
           "hotelProducts":{
             "ids":[
@@ -145,7 +113,7 @@
             "type":"roomProducts"
           }
         },
-        "href":"/packageRates/d75c174a1192f22b876984c8b1befec23acc7812"
+        "href":"/packageRates/d1626206778df345a11e95b240157c188e0a8548"
       }
     ]
   },
@@ -153,23 +121,24 @@
     "name":"Stalls",
     "rates":[
       {
-        "id":"3e642240119476f3c9ccac975c5099240877eb5d",
-        "grossPrice":231.42,
+        "id":"b87c34a041d1bfc462bca6600daf707e262a095c",
+        "grossPrice":270,
         "links":{
           "roomRates":{
             "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
+              "64eb376db7c89d265c14e87fd7a1f5e9"
             ],
             "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
           },
           "ticketRates":{
             "ids":[
-              "2696ea6822f7967d63e0e56e44dd7511"
+              "df2379a0c48465718ecfdd563795bc61"
             ],
             "type":"ticketRates",
-            "href":"/ticketRates/2696ea6822f7967d63e0e56e44dd7511",
-            "colour":"silver"
+            "href":"/ticketRates/df2379a0c48465718ecfdd563795bc61",
+            "colour":"silver",
+            "colourRank":"3"
           },
           "hotelProducts":{
             "ids":[
@@ -185,26 +154,27 @@
             "type":"roomProducts"
           }
         },
-        "href":"/packageRates/3e642240119476f3c9ccac975c5099240877eb5d"
+        "href":"/packageRates/b87c34a041d1bfc462bca6600daf707e262a095c"
       },
       {
-        "id":"428b6d23712200c7479d9a0bf7485259bd7ff433",
-        "grossPrice":297.14,
+        "id":"3f84d12a4206cc0c96b10a47bcdc8294364ac30d",
+        "grossPrice":307.14,
         "links":{
           "roomRates":{
             "ids":[
-              "6a98fc1e1efa26b5adc8c3a1a8de8314"
+              "64eb376db7c89d265c14e87fd7a1f5e9"
             ],
             "type":"roomRates",
-            "href":"/roomRates/6a98fc1e1efa26b5adc8c3a1a8de8314"
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
           },
           "ticketRates":{
             "ids":[
-              "a1eb713edcfe26713f8220d9e3e780b7"
+              "3dd73ab483aea4cf17930f6b5debbf5a"
             ],
             "type":"ticketRates",
-            "href":"/ticketRates/a1eb713edcfe26713f8220d9e3e780b7",
-            "colour":"gold"
+            "href":"/ticketRates/3dd73ab483aea4cf17930f6b5debbf5a",
+            "colour":"gold",
+            "colourRank":"2"
           },
           "hotelProducts":{
             "ids":[
@@ -220,7 +190,43 @@
             "type":"roomProducts"
           }
         },
-        "href":"/packageRates/428b6d23712200c7479d9a0bf7485259bd7ff433"
+        "href":"/packageRates/3f84d12a4206cc0c96b10a47bcdc8294364ac30d"
+      },
+      {
+        "id":"e8ea00f75296a072f9962eee2decf04465637190",
+        "grossPrice":350,
+        "links":{
+          "roomRates":{
+            "ids":[
+              "64eb376db7c89d265c14e87fd7a1f5e9"
+            ],
+            "type":"roomRates",
+            "href":"/roomRates/64eb376db7c89d265c14e87fd7a1f5e9"
+          },
+          "ticketRates":{
+            "ids":[
+              "182736140099b62b811afe1fa54433fd"
+            ],
+            "type":"ticketRates",
+            "href":"/ticketRates/182736140099b62b811afe1fa54433fd",
+            "colour":"platinum",
+            "colourRank":"1"
+          },
+          "hotelProducts":{
+            "ids":[
+              "ATGHSC"
+            ],
+            "type":"hotelProducts",
+            "href":"/hotelProducts/ATGHSC"
+          },
+          "roomProducts":{
+            "ids":[
+
+            ],
+            "type":"roomProducts"
+          }
+        },
+        "href":"/packageRates/e8ea00f75296a072f9962eee2decf04465637190"
       }
     ]
   }

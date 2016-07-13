@@ -11,7 +11,10 @@ module.exports = function(dust) {
   * @param {object} venueProducts venue products
   * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
-  * @example {@_filterSeats packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates} {/_filterSeats} output loop of sections with seats inside sorted by price
+  * @param {object} bandColours gets seat information from cloudant
+  * @param {string} sortType price sorting
+  * @param {object} seatLegend gets current colours from cloudant
+  * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id] seatLegend=_brandConfig["seatLegend"]["en"]} {/_filterSeats} output loop of sections with seats inside sorted by price
   */
 
   dust.helpers._filterSeats = function(chunk, context, bodies, params) {
@@ -21,8 +24,11 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    var bandColours = params.bandColours;
-    var sortByInput = params.sortBy;
+    var sortType = params.sortType;
+    var seatLegend = params.seatLegend;
+
+    var bestPrice = {};
+    var currentPrice, topTicket;
 
     var cheapestRoom = {
       id: 0,
@@ -60,19 +66,57 @@ module.exports = function(dust) {
       });
     }
 
+    // get the names of the best two sections from the theatre
+    function getBestSections(bandColours) {
+      var bestSections = [];
+      // add all section names to an array
+      _.forEach(bandColours, function(bands, section) {
+        bestSections.push(section);
+      });
+      // find the best section
+      return _.last(bestSections); // just Stalls
+    }
+
+    // compare prices
+    function chosenForYou(ticketRate, ticketRateSection) {
+      var bestSections = getBestSections(params.bandColours);
+      var ticketRatePrice = ticketRates[ticketRate.ids].grossPrice;
+      // check if current ticketRate exists
+      if (bestSections === ticketRateSection && _.last(ticketRate.colourRank)) {
+        // check if price is cheaper or exists
+        if (!currentPrice || ticketRatePrice < currentPrice) {
+          // assign ticket to object
+          bestPrice = {
+            id: ticketRate.ids,
+            price: ticketRatePrice,
+            colour: ticketRate.colour,
+            colourRank: ticketRate.colourRank
+          };
+          currentPrice = ticketRatePrice;
+        }
+      }
+      return bestPrice;
+    }
+
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
       // assign gold, silver, bronze to packages depending on their current priceBand
-      _.forEach(bandColours, function(sectionValue, sectionKey) {
+      _.forEach(params.bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (ticketRatesSection === sectionKey || ticketRatesSection.indexOf( sectionKey ) > -1 ) {
+        if (ticketRatesSection === sectionKey ) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
               // match transformer config to existing priceBand
               // adds colour to the packageRate object for consumption in templates.
-              ticketRate.colour = bandValue;
+              ticketRate.colour = seatLegend[bandValue];
+              ticketRate.colourRank = bandValue;
+              // use information to try and find the best deal
+              topTicket = chosenForYou(ticketRate, ticketRatesSection);
+              if (topTicket && ticketRate.ids === topTicket) {
+                ticketRate.bestOffer = true;
+              }
             }
           });
         }
@@ -88,7 +132,7 @@ module.exports = function(dust) {
         if (ticketRate.section === item.name) {
           // WEB-8081
           // make sure Transformer configuration has been pulled
-          if (bandColours) {
+          if (params.bandColours) {
             assignColoursToBands(packageRate.links.ticketRates, ticketRate.section, ticketRate.priceBand);
           }
           reply[i].rates.push(packageRate);
@@ -113,9 +157,10 @@ module.exports = function(dust) {
       // from Transfomer in order to pick all the colours been used for the current query and
       // so we create a new object bandTypes having the coulours as keys and empty arrays as values
       var bandTypes = {};
-      _.forEach(bandColours, function (sectionObj) {
-        _.forEach(sectionObj, function (quality) {
-          bandTypes[quality] = [];
+      _.forEach(params.bandColours, function (sectionObj) {
+        _.forEach(sectionObj, function (qualityNumber) {
+          var qualityString = seatLegend[qualityNumber];
+          bandTypes[qualityString] = [];
         });
       });
 
@@ -266,14 +311,11 @@ module.exports = function(dust) {
 
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
-    if ( sortByInput === 'price') {
+    if ( sortType === 'price') {
       reorderReplies();
       mergeReplies();
     }
     loopAndBuildHelperOutput();
-
-
     return chunk;
-
   };
 };
