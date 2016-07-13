@@ -9,11 +9,22 @@ module.exports = function(dust) {
   * @description A filter that nests package rates under theatre sections - Needs to be moved
   * @param {object} packageRates Package Rates
   * @param {object} venueProducts venue products
-  * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
-  * @example {@_filterSeats packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates} {/_filterSeats} output loop of sections with seats inside sorted by price
+  * @param {object} ticketRates ticket rates
+  * @param {object} bandColours seat mapping from Cloudant
+  * @param {object} seatLegend seat ranks from Cloudant
+  * @param {string} showCode show's unique code
+  * @example {@_filterSeats
+      sortBy="none"
+      packageRates=packageRatesReply.packageRates
+      venueProducts=venueProductsReply.venueProducts
+      roomRates=packageRatesReply.linked.roomRates
+      ticketRates=packageRatesReply.linked.ticketRates
+      bandColours=transformer[harvest.baskets.data.event.ticket.id]
+      seatLegend=_brandConfig.seatLegend.en
+      showCode=harvest.baskets.data.event.ticket.id
+    } {/_filterSeats} output loop of sections with seats inside sorted by price
   */
-
   dust.helpers._filterSeats = function(chunk, context, bodies, params) {
     params = params || {};
 
@@ -59,6 +70,31 @@ module.exports = function(dust) {
         }
       });
     }
+
+    /* function to find if there are any new priceBands that aren't in the
+    current version of the shows/seatMapping config in Cloudant */
+    function notificationOfNewBands() {
+      // loop through all current TicketRates
+      _.forEach(ticketRates, function(ticketValue, ticketKey) {
+        // loop through Cloudant config to get existing mapping
+        _.forEach(bandColours, function(bandValue, bandKey) {
+          if(bandKey.indexOf(ticketValue.section) > -1) {
+            if(!(ticketValue.priceBand in bandValue)) {
+              var errorObj = {
+                message: 'priceBand does not exist in config',
+                showCode: params.showCode,
+                section: ticketValue.section,
+                priceBand: ticketValue.priceBand
+              };
+              console.log(errorObj);
+              // _LTracker.push(erroObj);
+            }
+          }
+        });
+      });
+    }
+
+    notificationOfNewBands();
 
     // use Transformer show config to add Gold, Silver or Bronze to packageRate
     function assignColoursToBands(ticketRate, ticketRatesSection, ticketRatesPriceBand) {
