@@ -12,7 +12,7 @@ module.exports = function(dust) {
   * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
   * @param {object} bandColours gets seat information from cloudant
-  * @param {string} sortByInput price sorting
+  * @param {string} sortType price sorting
   * @param {object} seatLegend gets current colours from cloudant
   * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id] seatLegend=_brandConfig["seatLegend"]["en"]} {/_filterSeats} output loop of sections with seats inside sorted by price
   */
@@ -24,7 +24,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    var sortByInput = params.sortBy;
+    var sortType = params.sortBy;
     var seatLegend = params.seatLegend;
 
     var bestPrice = {};
@@ -312,7 +312,7 @@ module.exports = function(dust) {
 
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
-    if ( sortByInput === 'price') {
+    if ( sortType === 'price') {
       reorderReplies();
       mergeReplies();
     }
