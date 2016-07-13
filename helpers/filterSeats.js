@@ -75,11 +75,11 @@ module.exports = function(dust) {
     current version of the shows/seatMapping config in Cloudant */
     function notificationOfNewBands() {
       // loop through all current TicketRates
-      _.forEach(ticketRates, function(ticketValue, ticketKey) {
+      _.forEach(ticketRates, function(ticketValue) {
         // loop through Cloudant config to get existing mapping
         _.forEach(bandColours, function(bandValue, bandKey) {
-          if(bandKey.indexOf(ticketValue.section) > -1) {
-            if(!(ticketValue.priceBand in bandValue)) {
+          if (bandKey.indexOf(ticketValue.section) > -1) {
+            if (!(ticketValue.priceBand in bandValue)) {
               var errorObj = {
                 message: 'priceBand does not exist in config',
                 showCode: params.showCode,
