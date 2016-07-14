@@ -105,7 +105,7 @@ module.exports = function(dust) {
       _.forEach(params.bandColours, function(sectionValue, sectionKey) {
         // check for match between transformer and existing data
         // or check for section that might not have full title ( e.g. Grand Circle in Grand Circle (Left) )
-        if (ticketRatesSection === sectionKey ) {
+        if (ticketRatesSection === sectionKey || ticketRateSection.indexOf(sectionKey) > -1) {
           // match transformer config to existing seat section
           _.forEach(sectionValue, function(bandValue, bandKey) {
             if (ticketRatesPriceBand === bandKey) {
