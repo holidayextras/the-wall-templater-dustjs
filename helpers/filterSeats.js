@@ -12,7 +12,7 @@ module.exports = function(dust) {
   * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
   * @param {object} bandColours gets seat information from cloudant
-  * @param {string} sortByInput price sorting
+  * @param {string} sortType price sorting
   * @param {object} seatLegend gets current colours from cloudant
   * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id] seatLegend=_brandConfig["seatLegend"]["en"]} {/_filterSeats} output loop of sections with seats inside sorted by price
   */
@@ -24,7 +24,7 @@ module.exports = function(dust) {
     var venueProduct = _.head(params.venueProducts);
     var ticketRates = params.ticketRates;
     var roomRates = params.roomRates;
-    var sortByInput = params.sortBy;
+    var sortType = params.sortType;
     var seatLegend = params.seatLegend;
 
     var bestPrice = {};
@@ -74,15 +74,14 @@ module.exports = function(dust) {
         bestSections.push(section);
       });
       // find the best section
-      bestSections = _.last(bestSections); // just Stalls
-      return bestSections;
+      return _.last(bestSections); // just Stalls
     }
 
     // compare prices
     function chosenForYou(ticketRate, ticketRateSection) {
       var bestSections = getBestSections(params.bandColours);
       var ticketRatePrice = ticketRates[ticketRate.ids].grossPrice;
-      // check if current ticketRate exists in
+      // check if current ticketRate exists
       if (bestSections === ticketRateSection && _.last(ticketRate.colourRank)) {
         // check if price is cheaper or exists
         if (!currentPrice || ticketRatePrice < currentPrice) {
@@ -159,8 +158,9 @@ module.exports = function(dust) {
       // so we create a new object bandTypes having the coulours as keys and empty arrays as values
       var bandTypes = {};
       _.forEach(params.bandColours, function (sectionObj) {
-        _.forEach(sectionObj, function (quality) {
-          bandTypes[quality] = [];
+        _.forEach(sectionObj, function (qualityNumber) {
+          var qualityString = seatLegend[qualityNumber];
+          bandTypes[qualityString] = [];
         });
       });
 
@@ -311,13 +311,11 @@ module.exports = function(dust) {
 
     findCheapestRoom();
     loopPackageRatesAndEqualsCheapest();
-    if ( sortByInput === 'price') {
+    if ( sortType === 'price') {
       reorderReplies();
       mergeReplies();
     }
     loopAndBuildHelperOutput();
-
     return chunk;
-
   };
 };
