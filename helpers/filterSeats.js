@@ -234,7 +234,7 @@ module.exports = function(dust) {
     // the cheapest silver between left and right and so on.
     // If the rate of the left section is equal to the one on the right then we will
     // have 50% of probability to get the one on the left or the one on the right.
-    function getMergedSection(currSection, nextSection) {
+    function getLeftRightMergedSection(currSection, nextSection) {
       var mergedReply = currSection;
       var newName = getMergedName(currSection.name, nextSection.name);
       if (!newName) {
@@ -273,7 +273,7 @@ module.exports = function(dust) {
     // Loop through each section to see if the current section needs
     // to be merged with the next one (i.e. Grand Circle (Left) and Grand Circle (Right))
     // at the end we will have a new list of sections where left and right have been merged.
-    function mergeReplies() {
+    function mergeLeftRight() {
       var newReply = {};
       var loopMax = _.size(reply);
 
@@ -287,7 +287,7 @@ module.exports = function(dust) {
           break;
         }
 
-        var mergedSection = getMergedSection(currSection, nextSection);
+        var mergedSection = getLeftRightMergedSection(currSection, nextSection);
         // If we received a merged section from the 'getMergedSection' function
         // we can push the merged section into the newReply object and increase the index
         // by one so that the next loop will skip the check for the nextSection.
@@ -302,6 +302,62 @@ module.exports = function(dust) {
       reply = newReply;
     }
 
+    function getLeftCentreRightMergedSection(leftSection, centreSection, rightSection) {
+      var mergedLeftRightSection = getLeftRightMergedSection(leftSection, rightSection);
+      var leftRightRates = mergedLeftRightSection.rates;
+      var centreRates = centreSection.rates;
+      var centreColours = [];
+      var newRates = [];
+
+      _.forEach(centreRates, function(rate) {
+        centreColours.push(rate.links.ticketRates.colour);
+        newRates.push(rate);
+      });
+
+
+      _.forEach(leftRightRates, function(rate) {
+        var currColour = rate.links.ticketRates.colour;
+        if (centreColours.indexOf(currColour) === -1) {
+          newRates.push(rate);
+        }
+      });
+
+      newRates = _.orderBy(newRates, function(newRate) {
+        return newRate.grossPrice;
+      }, ['asc']);
+
+      centreSection.name = mergedLeftRightSection.name;
+      centreSection.rates = newRates;
+
+      return centreSection;
+    }
+
+    function mergeLeftCentreRight() {
+      var targetedSectionIndexes = [];
+
+      _.forEach(reply, function(section, index) {
+        if (section.name.toUpperCase().indexOf('CENTRE') !== -1) {
+          targetedSectionIndexes.push(index);
+        }
+      });
+
+      _.forEach(targetedSectionIndexes, function(centralSectionIndex) {
+        centralSectionIndex = parseInt(centralSectionIndex);
+        var mergedSection = getLeftCentreRightMergedSection(
+          reply[centralSectionIndex - 1],
+          reply[centralSectionIndex],
+          reply[centralSectionIndex + 1]
+        );
+        reply[centralSectionIndex - 1].toBeRemoved = true;
+        reply[centralSectionIndex + 1].toBeRemoved = true;
+        reply[centralSectionIndex] = mergedSection;
+      });
+
+      reply = _.filter(reply, function(section) {
+        return !section.toBeRemoved;
+      });
+    }
+
     function loopAndBuildHelperOutput() {
       // Loop through finalised reply and add each theatre section to context for looping in template
       _.forEach(reply, function(item) {
@@ -313,7 +369,8 @@ module.exports = function(dust) {
     loopPackageRatesAndEqualsCheapest();
     if ( sortType === 'price') {
       reorderReplies();
-      mergeReplies();
+      mergeLeftRight();
+      mergeLeftCentreRight();
     }
     loopAndBuildHelperOutput();
     return chunk;
