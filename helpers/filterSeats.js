@@ -342,7 +342,7 @@ module.exports = function(dust) {
       });
 
       _.forEach(targetedSectionIndexes, function(centralSectionIndex) {
-        centralSectionIndex = parseInt(centralSectionIndex);
+        centralSectionIndex = parseInt(centralSectionIndex, 10);
         var mergedSection = getLeftCentreRightMergedSection(
           reply[centralSectionIndex - 1],
           reply[centralSectionIndex],
