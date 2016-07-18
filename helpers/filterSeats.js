@@ -302,19 +302,29 @@ module.exports = function(dust) {
       reply = newReply;
     }
 
+    // Essentially we create a new section that merge the left, centre and righ sections.
+    // First we search for the central seats, if a quality in the centre is missing
+    // than we search for it in the left or right section.
+    // The function will return the new merged section.
     function getLeftCentreRightMergedSection(leftSection, centreSection, rightSection) {
+      // First we merge the left and right sections and store the created one into
+      // a variable.
       var mergedLeftRightSection = getLeftRightMergedSection(leftSection, rightSection);
       var leftRightRates = mergedLeftRightSection.rates;
       var centreRates = centreSection.rates;
       var centreColours = [];
       var newRates = [];
 
+      // We store all the rates of the central section into an array and all
+      // the colours found into another one.
       _.forEach(centreRates, function(rate) {
         centreColours.push(rate.links.ticketRates.colour);
         newRates.push(rate);
       });
 
-
+      // We loop through all the rates of the left-right merged section
+      // and if we find a colour that is not present in the central rates we add it
+      // into the array.
       _.forEach(leftRightRates, function(rate) {
         var currColour = rate.links.ticketRates.colour;
         if (centreColours.indexOf(currColour) === -1) {
@@ -322,10 +332,13 @@ module.exports = function(dust) {
         }
       });
 
+      // We order the array of new rates that we just created by price
       newRates = _.orderBy(newRates, function(newRate) {
         return newRate.grossPrice;
       }, ['asc']);
 
+      // We replace the name of the centre section with the merged one
+      // and we replace the rates with the new array.
       centreSection.name = mergedLeftRightSection.name;
       centreSection.rates = newRates;
 
@@ -335,6 +348,8 @@ module.exports = function(dust) {
     function mergeLeftCentreRight() {
       var targetedSectionIndexes = [];
 
+      // We loop through all the replies and if a reply is a central section
+      // then we add its index to an array of indexes in order to use them later
       _.forEach(reply, function(section, index) {
         if (section.name.toUpperCase().indexOf('CENTRE') !== -1) {
           targetedSectionIndexes.push(index);
@@ -343,16 +358,25 @@ module.exports = function(dust) {
 
       _.forEach(targetedSectionIndexes, function(centralSectionIndex) {
         centralSectionIndex = parseInt(centralSectionIndex, 10);
+        // We use the index to find the left section (just before the central),
+        // the central section and the right section (just after the central). Then we pass
+        // these three sections to the function that return the merged section.
         var mergedSection = getLeftCentreRightMergedSection(
           reply[centralSectionIndex - 1],
           reply[centralSectionIndex],
           reply[centralSectionIndex + 1]
         );
+
+        // We assign the merged section into the position previously occupied by
+        // the central section and also we mark the left and right positions
+        // as to be removed from the reply  object.
         reply[centralSectionIndex - 1].toBeRemoved = true;
         reply[centralSectionIndex + 1].toBeRemoved = true;
         reply[centralSectionIndex] = mergedSection;
       });
 
+      // We remove the sections previously marked as to be removed through a
+      // loadash filter.
       reply = _.filter(reply, function(section) {
         return !section.toBeRemoved;
       });
