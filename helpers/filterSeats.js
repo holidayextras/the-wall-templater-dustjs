@@ -9,14 +9,22 @@ module.exports = function(dust) {
   * @description A filter that nests package rates under theatre sections - Needs to be moved
   * @param {object} packageRates Package Rates
   * @param {object} venueProducts venue products
-  * @param {object} ticketRates ticket rates
   * @param {object} roomRates room rates
-  * @param {object} bandColours gets seat information from cloudant
-  * @param {string} sortType price sorting
-  * @param {object} seatLegend gets current colours from cloudant
-  * @example {@_filterSeats sortBy="none" packageRates=packageRatesReply.packageRates venueProducts=venueProductsReply.venueProducts roomRates=packageRatesReply.linked.roomRates ticketRates=packageRatesReply.linked.ticketRates bandColours=transformer[harvest.baskets.data.event.ticket.id] seatLegend=_brandConfig["seatLegend"]["en"]} {/_filterSeats} output loop of sections with seats inside sorted by price
+  * @param {object} ticketRates ticket rates
+  * @param {object} bandColours seat mapping from Cloudant
+  * @param {object} seatLegend seat ranks from Cloudant
+  * @param {string} showCode show's unique code
+  * @example {@_filterSeats
+      sortBy="none"
+      packageRates=packageRatesReply.packageRates
+      venueProducts=venueProductsReply.venueProducts
+      roomRates=packageRatesReply.linked.roomRates
+      ticketRates=packageRatesReply.linked.ticketRates
+      bandColours=transformer[harvest.baskets.data.event.ticket.id]
+      seatLegend=_brandConfig.seatLegend.en
+      showCode=harvest.baskets.data.event.ticket.id
+    } {/_filterSeats} output loop of sections with seats inside sorted by price
   */
-
   dust.helpers._filterSeats = function(chunk, context, bodies, params) {
     params = params || {};
 
@@ -26,6 +34,8 @@ module.exports = function(dust) {
     var roomRates = params.roomRates;
     var sortType = params.sortType;
     var seatLegend = params.seatLegend;
+
+    console.log(ticketRates);
 
     var bestPrice = {};
     var currentPrice, topTicket;
@@ -65,6 +75,31 @@ module.exports = function(dust) {
         }
       });
     }
+
+    /* function to find if there are any new priceBands that aren't in the
+    current version of the shows/seatMapping config in Cloudant */
+    function notificationOfNewBands() {
+      // loop through all current TicketRates
+      _.forEach(ticketRates, function(ticketValue) {
+        // loop through Cloudant config to get existing mapping
+        _.forEach(params.bandColours, function(bandValue, bandKey) {
+          if (bandKey.indexOf(ticketValue.section) > -1) {
+            if (!(ticketValue.priceBand in bandValue)) {
+              var errorObj = {
+                message: 'priceBand does not exist in config',
+                showCode: params.showCode,
+                section: ticketValue.section,
+                priceBand: ticketValue.priceBand
+              };
+              console.log(errorObj);
+              // _LTracker.push(erroObj);
+            }
+          }
+        });
+      });
+    }
+
+    notificationOfNewBands();
 
     // get the names of the best two sections from the theatre
     function getBestSections(bandColours) {
