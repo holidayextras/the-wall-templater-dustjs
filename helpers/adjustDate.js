@@ -27,6 +27,6 @@
       date = date.subtract(subtract, unit);
     }
     var format = dust.helpers.tap(params.format, chunk, context);
-    return chunk.write(moment.utc(date).format(format));
+    return chunk.write(date.format(format));
   };
 };
