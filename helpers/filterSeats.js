@@ -157,8 +157,8 @@ module.exports = function(dust) {
       // from Transfomer in order to pick all the colours been used for the current query and
       // so we create a new object bandTypes having the coulours as keys and empty arrays as values
       var bandTypes = {};
-      _.forEach(params.bandColours, function (sectionObj) {
-        _.forEach(sectionObj, function (qualityNumber) {
+      _.forEach(params.bandColours, function(sectionObj) {
+        _.forEach(sectionObj, function(qualityNumber) {
           var qualityString = seatLegend[qualityNumber];
           bandTypes[qualityString] = [];
         });

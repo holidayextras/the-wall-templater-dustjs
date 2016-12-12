@@ -5,6 +5,7 @@ var moment = require('moment');
 module.exports = function(dust) {
 
   /*
+  * @deprecated - since 3.4.0 - Please use adjustDate instead *
   * @description Calculate a customer's check-out date based on their check-in date and the amount of nights they have booked
   * @param {string} startDate start date
   * @param {string} nights amount of nights
