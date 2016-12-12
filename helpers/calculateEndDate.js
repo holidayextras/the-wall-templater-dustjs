@@ -10,7 +10,7 @@ module.exports = function(dust) {
   * @param {string} nights amount of nights
   * @param {string} [type=days] the measurement of time to add to
   * @param {string} format - the moment format string for the return
-  * @param {integer} reduce - a number to reduce the nights by. E.g. tickets reduce by one, as standard 
+  * @param {integer} reduce - a number to reduce the nights by. E.g. tickets reduce by one, as standard
   * @example {@_calcEndDate startDate="07/01/2015" nights="3" type="days" /} output "10/01/2015"
   */
 
