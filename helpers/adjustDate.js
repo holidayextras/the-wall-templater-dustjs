@@ -27,7 +27,7 @@ module.exports = function(dust) {
     var subtract = dust.helpers.tap(params.subtract, chunk, context);
     var unit = dust.helpers.tap(params.unit, chunk, context) || 'days';
     if (add) {
-      date = date.add(subtract, unit);
+      date = date.add(add, unit);
     }
     if (subtract) {
       date = date.subtract(subtract, unit);
