@@ -15,9 +15,9 @@ module.exports = function(dust) {
   * @example {@_getRoomDescription occupancyType="TWIN" adults="1" children="1" /} output TWIN11
   */
   dust.helpers._getRoomDescription = function(chunk, context, bodies, params) {
-    var roomType = roomTypes[params.occupancytype + params.adults + params.children];
+    var roomType = roomTypes[params.occupancytype + params.adults + params.children] || {};
 
     // Generate room description
-    return (params.roomdescription || roomType.roomShortDesc) + ' - ' + getComposition({ adults: roomType.adults, children: roomType.children, infants: params.infants });
+    return chunk.write((params.roomdescription || roomType.roomShortDesc) + ' - ' + getComposition({ adults: roomType.adults, children: roomType.children, infants: params.infants }));
   };
 };
