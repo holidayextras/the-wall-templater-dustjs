@@ -84,3 +84,6 @@ message.json
 
 # Make Up Linting
 /.eslintrc
+
+# VSCode
+.vscode
