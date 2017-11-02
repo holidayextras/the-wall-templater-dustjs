@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('lodash');
-var roomTypes = require( '../lib/roomTypes' );
+var roomTypes = require('../lib/roomTypes');
+var getComposition = require('../lib/getComposition');
 
 module.exports = function(dust) {
 
@@ -14,9 +14,10 @@ module.exports = function(dust) {
   * @param {string} children, number of children i.e. 1,2
   * @example {@_getRoomDescription occupancyType="TWIN" adults="1" children="1" /} output TWIN11
   */
-
   dust.helpers._getRoomDescription = function(chunk, context, bodies, params) {
-    var roomCode = params.occupancytype + params.adults + params.children;
-    return chunk.write(_.get(roomTypes, [roomCode, 'roomDescription'], 'Description Not Found'));
+    var roomType = roomTypes[params.occupancytype + params.adults + params.children] || {};
+
+    // Generate room description
+    return chunk.write((params.roomdescription || roomType.roomShortDesc) + ' - ' + getComposition({ adults: roomType.adults, children: roomType.children, infants: params.infants }));
   };
 };
