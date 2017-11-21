@@ -10,7 +10,7 @@ module.exports = function(dust) {
 
   dust.helpers._isCarParking = function(chunk, context, bodies, params) {
     // strip the whitespace and lowercase content.name just to be safe and return true or false appropriately
-    if(typeof params != "undefined" && params.upgradeName) {
+    if(typeof params != 'undefined' && params.upgradeName) {
       return (params.upgradeName.toLowerCase().replace(/ /g, "") === 'carparking');
     }
     return false;
