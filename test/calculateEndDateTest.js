@@ -30,10 +30,11 @@ describe('Calculate end date - Dust helpers', function() {
     var params = {
       startDate: '2015-10-07',
       nights: 3,
-      type: 'days'
+      type: 'days',
+      format: 'DD/MM/YYYY'
     };
 
-    return expect(dustMock.helpers._calculateEndDate(chunkMock, null, null, params)).to.be.a('string').that.equals('2015-10-10T00:00:00+00:00');
+    return expect(dustMock.helpers._calculateEndDate(chunkMock, null, null, params)).to.be.a('string').that.equals('10/10/2015');
   });
 
   it('should return "NaN" when no params are passed', function() {
