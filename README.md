@@ -1,7 +1,5 @@
 # thewall-templater-dustjs
 
-[![Circle CI](https://circleci.com/gh/holidayextras/the-wall-templater-dustjs/tree/master.svg?style=svg&circle-token=0d2db228af54ee6c66ab83dba0cafcb965f1f573)](https://circleci.com/gh/holidayextras/the-wall-templater-dustjs/tree/master)
-
 ## About
 
 This is a template handler compatible with [The Wall](https://github.com/holidayextras/the-wall).
