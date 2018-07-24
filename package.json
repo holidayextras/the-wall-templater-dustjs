@@ -24,7 +24,8 @@
     "pretest": "npm run prerelease",
     "test": "npm run lint && npm run test:coverage",
     "test:coverage": "istanbul cover _mocha",
-    "posttest": "istanbul check-coverage"
+    "posttest": "istanbul check-coverage",
+    "deploy": "exit 0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -43,5 +44,8 @@
     "moment": "2.21.0",
     "numeral": "1.5.3",
     "q": "1.0.1"
-  }
+  },
+  "owner": "sb-backoffice",
+  "platform": "custom",
+  "ci": "dockyard"
 }
