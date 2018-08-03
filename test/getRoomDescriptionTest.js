@@ -25,7 +25,7 @@ describe('Get Room Description - Dust helpers', function() {
     done();
   });
 
-  it('should return "Double room - 2 Adults"', function() {
+  it('should return "Double room"', function() {
     var params = {
       occupancytype: 'DBL',
       adults: 2,
@@ -33,10 +33,10 @@ describe('Get Room Description - Dust helpers', function() {
       infants: 0
     };
 
-    expect(dustMock.helpers._getRoomDescription(chunkMock, null, null, params)).to.be.equal('Double room - 2 Adults');
+    expect(dustMock.helpers._getRoomDescription(chunkMock, null, null, params)).to.be.equal('Double room');
   });
 
-  it('should return "Accessible room - 2 Single Beds  with Bunk Beds and pull out bed - 2 Adults, 2 Children"', function() {
+  it('should return "Accessible room - 2 Single Beds  with Bunk Beds and pull out bed "', function() {
     var params = {
       roomdescription: 'Accessible room - 2 Single Beds  with Bunk Beds and pull out bed',
       occupancytype: 'QUAD',
@@ -45,7 +45,7 @@ describe('Get Room Description - Dust helpers', function() {
       infants: 0
     };
 
-    expect(dustMock.helpers._getRoomDescription(chunkMock, null, null, params)).to.be.equal('Accessible room - 2 Single Beds  with Bunk Beds and pull out bed - 2 Adults, 2 Children');
+    expect(dustMock.helpers._getRoomDescription(chunkMock, null, null, params)).to.be.equal('Accessible room - 2 Single Beds  with Bunk Beds and pull out bed');
   });
 
 });

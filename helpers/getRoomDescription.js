@@ -1,7 +1,6 @@
 'use strict';
 
 var roomTypes = require('../lib/roomTypes');
-var getComposition = require('../lib/getComposition');
 
 module.exports = function(dust) {
 
@@ -18,6 +17,6 @@ module.exports = function(dust) {
     var roomType = roomTypes[params.occupancytype + params.adults + params.children] || {};
 
     // Generate room description
-    return chunk.write((params.roomdescription || roomType.roomShortDesc) + ' - ' + getComposition({ adults: roomType.adults, children: roomType.children, infants: params.infants }));
+    return chunk.write(params.roomdescription || roomType.roomShortDesc);
   };
 };
