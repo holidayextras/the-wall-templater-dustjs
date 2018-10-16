@@ -1,7 +1,7 @@
 {
   "name": "the-wall-templater-dustjs",
   "description": "The Wall compatible template handler",
-  "version": "3.10.0",
+  "version": "3.11.0",
   "homepage": "https://github.com/holidayextras/the-wall-templater-dustjs",
   "author": {
     "name": "Shortbreaks",
@@ -31,7 +31,7 @@
     "chai-as-promised": "^5.3.0",
     "deployment-helpers": "git+ssh://git@github.com:holidayextras/deployment-helpers.git",
     "istanbul": "0.3.13",
-    "make-up": "^9.1.0",
+    "make-up": "^10.0.0",
     "mocha": "^2.4.5",
     "q-io": "1.11.5"
   },
@@ -39,8 +39,8 @@
     "dustjs-helpers": "1.7.1",
     "dustjs-linkedin": "2.7.2",
     "joi": "4.6.2",
-    "lodash": "4.12.0",
-    "moment": "2.21.0",
+    "lodash": "4.17.11",
+    "moment": "2.22.1",
     "numeral": "1.5.3",
     "q": "1.0.1"
   },
