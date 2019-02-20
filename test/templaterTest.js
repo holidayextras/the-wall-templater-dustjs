@@ -2,8 +2,7 @@
 
 var _ = require('lodash');
 var path = require('path');
-var Q = require('q');
-var fs = require('q-io/fs');
+var fs = require('fs');
 var expect = require('chai')
   .use(require('chai-as-promised'))
   .expect;
@@ -23,7 +22,7 @@ var filesRequired = {
 testFiles.fooData = require(path.join(__dirname, '/fixtures/foo.json'));
 
 // This functionality is called before any tests run.
-beforeEach(function(done) {
+beforeEach(function() {
 
   // Start up a new templater instance to run our tests on.
   templater = new Templater({
@@ -31,16 +30,8 @@ beforeEach(function(done) {
   });
 
   _.each(filesRequired, function(value, key) {
-    fs.read(value).then(function(contents) {
-      testFiles[key] = contents;
-    });
-  });
-
-  // Load all the files we require for the tests.
-  Q.all(testFiles).then(function() {
-    // Cool, all files loaded so let's move on to the tests ;)
-    done();
-  });
+    testFiles[key] = fs.readFileSync(value, 'utf8');
+  })
 });
 
 
