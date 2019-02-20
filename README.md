@@ -67,7 +67,7 @@ $ npm test
 
 ## Contributing
 
-Code is linted checked against the style guide with [make-up](https://github.com/holidayextras/make-up), running npm test will run all tests required.
+Code is linted checked against the style guide with Standard, running npm test will run all tests required.
 
 
 ## License

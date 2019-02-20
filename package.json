@@ -18,7 +18,8 @@
   },
   "scripts": {
     "ci": "echo 'nothing to do here'",
-    "lint": "make-up lib helpers",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
     "prerelease": "node_modules/deployment-helpers/nodeApps/preRelease.sh",
     "pretest": "npm run prerelease",
     "test": "npm run lint && npm run test:coverage",
@@ -31,8 +32,8 @@
     "chai-as-promised": "^5.3.0",
     "deployment-helpers": "git+ssh://git@github.com:holidayextras/deployment-helpers.git",
     "istanbul": "0.3.13",
-    "make-up": "^10.0.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "standard": "^12.0.1"
   },
   "dependencies": {
     "dustjs-helpers": "1.7.1",
@@ -44,5 +45,17 @@
   },
   "owner": "sb-backoffice",
   "platform": "custom",
-  "ci": "dockyard"
+  "ci": "dockyard",
+  "standard": {
+    "globals": [
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "expect",
+      "it",
+      "sandbox",
+      "sinon"
+    ]
+  }
 }
