@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var pluralise = require('../lib/pluralise');
+var pluralise = require('../lib/pluralise')
 
-module.exports = function(dust) {
-
+module.exports = function (dust) {
   /*
   * @description Extend dustjs with a helper which retrieves hotel room descriptions
   * for offsite hotels - function adds occupancyType, adults, children to create the
@@ -13,25 +12,25 @@ module.exports = function(dust) {
   * @param {string} children, number of children i.e. 1,2
   * @example {@_getRoomDescription occupancyType="TWIN" adults="1" children="1" /} output TWIN11
   */
-  dust.helpers._getComposition = function(chunk, context, bodies, params) {
-    params = params || {};
-    var adults = params.adults;
-    var children = params.children;
-    var infants = params.infants;
+  dust.helpers._getComposition = function (chunk, context, bodies, params) {
+    params = params || {}
+    var adults = params.adults
+    var children = params.children
+    var infants = params.infants
 
-    if (!adults) return false;
+    if (!adults) return false
 
-    var composition = adults + ' ' + pluralise('Adult', adults);
+    var composition = adults + ' ' + pluralise('Adult', adults)
 
     if (children > 0) {
-      composition += infants > 0 ? ',' : ' and';
-      composition += ' ' + children + ' ' + pluralise('Child', children);
+      composition += infants > 0 ? ',' : ' and'
+      composition += ' ' + children + ' ' + pluralise('Child', children)
     }
     if (infants > 0) {
-      composition += ', ' + infants + ' ' + pluralise('Infant', infants);
+      composition += ', ' + infants + ' ' + pluralise('Infant', infants)
     }
 
     // Generate party description
-    return chunk.write(composition);
-  };
-};
+    return chunk.write(composition)
+  }
+}

@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var roomTypes = require('../lib/roomTypes');
+var roomTypes = require('../lib/roomTypes')
 
-module.exports = function(dust) {
-
+module.exports = function (dust) {
   /*
   * @description Extend dustjs with a helper which retrieves hotel room descriptions
   * for offsite hotels - function adds occupancyType, adults, children to create the
@@ -13,10 +12,10 @@ module.exports = function(dust) {
   * @param {string} children, number of children i.e. 1,2
   * @example {@_getRoomDescription occupancyType="TWIN" adults="1" children="1" /} output TWIN11
   */
-  dust.helpers._getRoomDescription = function(chunk, context, bodies, params) {
-    var roomType = roomTypes[params.occupancytype + params.adults + params.children] || {};
+  dust.helpers._getRoomDescription = function (chunk, context, bodies, params) {
+    var roomType = roomTypes[params.occupancytype + params.adults + params.children] || {}
 
     // Generate room description
-    return chunk.write(params.roomdescription || roomType.roomShortDesc);
-  };
-};
+    return chunk.write(params.roomdescription || roomType.roomShortDesc)
+  }
+}
