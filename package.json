@@ -39,7 +39,7 @@
     "dustjs-helpers": "1.7.1",
     "dustjs-linkedin": "2.7.2",
     "joi": "4.6.2",
-    "lodash": "4.17.11",
+    "lodash": "4.17.21",
     "moment": "2.22.1",
     "numeral": "1.5.3"
   },
