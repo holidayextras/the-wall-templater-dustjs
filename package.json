@@ -40,7 +40,7 @@
     "dustjs-linkedin": "2.7.2",
     "joi": "4.6.2",
     "lodash": "4.17.11",
-    "moment": "2.22.1",
+    "moment": "2.29.4",
     "numeral": "1.5.3"
   },
   "owner": "shortbreaks",
