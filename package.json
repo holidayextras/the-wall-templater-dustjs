@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "dustjs-helpers": "1.7.1",
-    "dustjs-linkedin": "2.7.2",
+    "dustjs-linkedin": "3.0.0",
     "joi": "4.6.2",
     "lodash": "4.17.11",
     "moment": "2.22.1",
